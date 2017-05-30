@@ -4,7 +4,6 @@ import javax.swing.*;
 
 
 public class NEWSUBGUI {
-    private JList list1;
     private JFormattedTextField formattedTextField1;
     private JFormattedTextField formattedTextField2;
     private JFormattedTextField formattedTextField3;
@@ -15,5 +14,9 @@ public class NEWSUBGUI {
     private JPanel SubnetNamePanel;
     private JLabel Subnetnamelabel;
     private JButton createButton;
-    private JButton button2;
+    private JButton changeButton1;
+    private JList list1;
+    private JButton deleteButton;
+    private JButton changeButton;
 }
+
