@@ -36,7 +36,7 @@ class FileParserTest {
                 .setBroadcastAddress(new IPv4BroadcastAddress(new int[]{192,168,0,255}))
                 .setNetworkID(new IPv4NetworkID(new int[]{192,168,0,0}));
 
-        FileParser parser = new FileParser("resources/out/TestFile16052017101858.txt");
+        FileParser parser = new FileParser("resources/out/TestFile30052017095245.txt");
 
         parsedSubnet = parser.parse();
     }

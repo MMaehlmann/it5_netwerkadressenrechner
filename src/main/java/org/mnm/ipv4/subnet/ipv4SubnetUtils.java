@@ -6,6 +6,7 @@ import org.mnm.ipv4.ipv4.IPv4NetworkID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.function.IntBinaryOperator;
 import java.util.function.IntFunction;
@@ -400,33 +401,37 @@ public class ipv4SubnetUtils {
         return -1;
     }
 
-    public static List<IPv4HostAddress> getAllHosts(IPv4Subnet subnet) {
-        int [] first = subnet.getMinHost().getIpv4Address();
-        int [] last = subnet.getMaxHost().getIpv4Address();
-        int [] tempHost = first;
+    public static ArrayList<IPv4HostAddress> getAllHosts(IPv4Subnet subnet) {
+        int [] first = subnet.getMinHost().getIpv4Address().clone();
         int index = 3;
-        List<IPv4HostAddress> hostAddressList = new ArrayList<>();
+        ArrayList<IPv4HostAddress> hostAddressList = new ArrayList<>();
         long amountHosts = subnet.getSubnetMask().getMaxHosts();
 
         for(long l = 0; l < amountHosts; l++){
-            tempHost[index] += 1;
-            hostAddressList.add(new IPv4HostAddress(tempHost));
-            if(Arrays.equals(tempHost, last))
-                return hostAddressList;
+            hostAddressList.add(new IPv4HostAddress(first.clone()));
+            first[index] ++;
+
+            if(first[index] == 255) {
+                hostAddressList.add(new IPv4HostAddress(first.clone()));
+                l++;
+                int grupenwechsel = findGrupenwechsel(first);
+                first[grupenwechsel-1] ++;
+                for(int i = grupenwechsel; i < 4; i++)
+                    first[i] = 0;
+            }
         }
         return hostAddressList;
     }
 
-    public static IPv4HostAddress calcMaxHost(IPv4BroadcastAddress broadcastAddress){
-            int[] h = broadcastAddress.getIpv4Address();
-            h[3] = h[3]-1;
-            return new IPv4HostAddress(h);
-    }
+    private static int findGrupenwechsel(int[] first) {
+        int ret = 0;
+        for(int i = 3; i >= 0; i--)
+            if(first[i] == 255)
+                ret = i;
+            else
+                return ret;
 
-    public static IPv4HostAddress calcMinHost(IPv4NetworkID iPv4NetworkID){
-        int[] h = iPv4NetworkID.getIpv4Address();
-        h[3] = h[3]+1;
-        return new IPv4HostAddress(h);
+        return ret;
     }
 
     /**

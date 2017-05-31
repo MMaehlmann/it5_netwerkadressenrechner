@@ -25,8 +25,6 @@ public class IPv4Subnet {
     private IPv4BroadcastAddress broadcastAddress;
     private IPv4NetworkID networkID;
 
-    private IPv4HostAddress minHost, maxHost;
-
     private String name;
 
     public IPv4Subnet() {}
@@ -40,10 +38,8 @@ public class IPv4Subnet {
     public IPv4Subnet(IPv4Subnet.Builder builder) {
         this.setName(builder.name)
             .setSubnetMask(builder.subnetMask)
-            .setBroadcastAddress(broadcastAddress)
-            .setNetworkID(builder.networkID)
-            .setMinHost(builder.minHost)
-            .setMaxHost(builder.maxHost);
+            .setBroadcastAddress(builder.broadcastAddress)
+            .setNetworkID(builder.networkID);
     }
 
     public IPv4Subnet addHost(IPv4HostAddress address) throws SubnetBuildingError {
@@ -74,7 +70,7 @@ public class IPv4Subnet {
     }
 
     public IPv4BroadcastAddress getBroadcast() {
-        return broadcastAddress;
+        return this.broadcastAddress;
     }
 
     public IPv4Subnet setBroadcastAddress(IPv4BroadcastAddress address) {
@@ -113,11 +109,11 @@ public class IPv4Subnet {
     }
 
     public IPv4NetworkID getNetID() {
-        return networkID;
+        return this.networkID;
     }
 
     public List<IPv4Address> getAddressList() {
-        return addressList;
+        return this.addressList;
     }
 
     public IPv4Subnet setAddressList(List<IPv4Address> addressList) {
@@ -126,7 +122,7 @@ public class IPv4Subnet {
     }
 
     public IPv4SubnetMask getSubnetMask() {
-        return subnetMask;
+        return this.subnetMask;
     }
 
     public IPv4Subnet setSubnetMask(IPv4SubnetMask subnetMask) {
@@ -135,21 +131,15 @@ public class IPv4Subnet {
     }
 
     public IPv4HostAddress getMinHost() {
-        return minHost;
-    }
-
-    public IPv4Subnet setMinHost(IPv4HostAddress minHost) {
-        this.minHost = minHost;
-        return this;
+        int[] temp = this.getNetID().getIpv4Address().clone();
+        temp[3] += 1;
+        return new IPv4HostAddress(temp);
     }
 
     public IPv4HostAddress getMaxHost() {
-        return maxHost;
-    }
-
-    public IPv4Subnet setMaxHost(IPv4HostAddress maxHost) {
-        this.maxHost = maxHost;
-        return this;
+        int[] temp = this.getBroadcast().getIpv4Address().clone();
+        temp[3] -= 1;
+        return new IPv4HostAddress(temp);
     }
 
     /**
@@ -163,18 +153,6 @@ public class IPv4Subnet {
         private IPv4BroadcastAddress broadcastAddress;
         private IPv4NetworkID networkID;
         private String name;
-        private IPv4HostAddress minHost;
-        private IPv4HostAddress maxHost;
-
-        public IPv4Subnet.Builder minHost(IPv4HostAddress minHost) {
-            this.minHost = minHost;
-            return this;
-        }
-
-        public IPv4Subnet.Builder maxHost(IPv4HostAddress maxHost) {
-            this.maxHost = maxHost;
-            return this;
-        }
 
         public IPv4Subnet.Builder subnetMask(IPv4SubnetMask subnetMask) {
             this.subnetMask = subnetMask;
@@ -229,9 +207,6 @@ public class IPv4Subnet {
                 throw new SubnetBuildingError("An invalid netID was detected: " + this.networkID);
 
             this.broadcastAddress = ipv4SubnetUtils.calcBroadcast(subnetMask, networkID);
-
-            this.maxHost = ipv4SubnetUtils.calcMaxHost(this.broadcastAddress);
-            this.minHost = ipv4SubnetUtils.calcMinHost(this.networkID);
 
             return build();
         }

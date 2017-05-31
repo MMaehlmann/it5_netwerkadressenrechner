@@ -21,62 +21,25 @@ import static org.junit.jupiter.api.Assertions.*;
 class ipv4SubnetUtilsTest {
 
     @Test
-    void calcMinHost() throws SubnetBuildingError {
-        IPv4Subnet s1, s2,s3,s4,s5;
-        s1 = new IPv4Subnet.Builder().buildByName("192.168.0.0/24");
-        s2 = new IPv4Subnet.Builder().buildByName("192.168.200.0/24");
-        s3 = new IPv4Subnet.Builder().buildByName("192.168.30.0/27");
-        s4 = new IPv4Subnet.Builder().buildByName("192.168.30.0/30");
-        s5 = new IPv4Subnet.Builder().buildByName("192.0.0.0/4");
-
-        assertArrayEquals(new int[]{192,168,0,1},
-                ipv4SubnetUtils.calcMinHost(s1.getNetID()).getIpv4Address());
-
-        assertArrayEquals(new int[]{192,168,200,1},
-                ipv4SubnetUtils.calcMinHost(s2.getNetID()).getIpv4Address());
-
-        assertArrayEquals(new int[]{192,168,30,1},
-                ipv4SubnetUtils.calcMinHost(s3.getNetID()).getIpv4Address());
-
-        assertArrayEquals(new int[]{192,168,30,1},
-                ipv4SubnetUtils.calcMinHost(s4.getNetID()).getIpv4Address());
-
-        assertArrayEquals(new int[]{192,0,0,1},
-                ipv4SubnetUtils.calcMinHost(s5.getNetID()).getIpv4Address());
-    }
-
-    @Test
     void getAllHosts() throws SubnetBuildingError {
         IPv4Subnet s1, s2,s3,s4,s5;
         s1 = new IPv4Subnet.Builder().buildByName("192.168.0.0/24");
+        s2 = new IPv4Subnet.Builder().buildByName("192.168.0.0/20");
+        s3 = new IPv4Subnet.Builder().buildByName("0.0.0.0/32");
+        s4 = new IPv4Subnet.Builder().buildByName("192.168.0.0/20");
+        s5 = new IPv4Subnet.Builder().buildByName("192.168.0.0/20");
 
-        List<IPv4HostAddress> list = ipv4SubnetUtils.getAllHosts(s1);
-        list.stream().forEach(System.out::println);
-    }
+        List<IPv4HostAddress> list1 = ipv4SubnetUtils.getAllHosts(s1);
+        //assertEquals(254, list1.size());
 
-    @Test
-    void calcMaxHost() throws SubnetBuildingError {
-        IPv4Subnet s1, s2,s3,s4,s5;
-            s1 = new IPv4Subnet.Builder().buildByName("192.168.0.0/24");
-            s2 = new IPv4Subnet.Builder().buildByName("192.168.200.0/24");
-            s3 = new IPv4Subnet.Builder().buildByName("192.168.30.0/27");
-            s4 = new IPv4Subnet.Builder().buildByName("192.168.30.0/30");
-            s5 = new IPv4Subnet.Builder().buildByName("192.0.0.0/4");
+        List<IPv4HostAddress> list3 = ipv4SubnetUtils.getAllHosts(s3);
+        assertTrue(list3.isEmpty());
 
-        assertArrayEquals(new int[]{192,168,0,254},
-                    ipv4SubnetUtils.calcMaxHost(s1.getBroadcast()).getIpv4Address());
+        List<IPv4HostAddress> list2 = ipv4SubnetUtils.getAllHosts(s2);
+        list2.stream().forEach(System.out::println);
+        assertEquals(4094, list2.size());
 
-        assertArrayEquals(new int[]{192,168,200,254},
-                ipv4SubnetUtils.calcMaxHost(s2.getBroadcast()).getIpv4Address());
 
-        assertArrayEquals(new int[]{192,168,30,30},
-                ipv4SubnetUtils.calcMaxHost(s3.getBroadcast()).getIpv4Address());
-
-        assertArrayEquals(new int[]{192,168,30,3},
-                ipv4SubnetUtils.calcMaxHost(s4.getBroadcast()).getIpv4Address());
-
-        assertArrayEquals(new int[]{207,255,255,254},
-                ipv4SubnetUtils.calcMaxHost(s5.getBroadcast()).getIpv4Address());
     }
 
     @Test
