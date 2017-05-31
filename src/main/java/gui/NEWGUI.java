@@ -1,12 +1,21 @@
 package main.java.gui;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-/**
- * Created by JiFriedrich on 30.05.2017.
- */
-public class NEWGUI {
+
+public class NEWGUI extends NEWSUBGUI{
     private JTabbedPane tabbedPane1;
     private JList list1;
-    private JButton button1;
+    private JButton createButton;
+
+    public NEWGUI() {
+        createButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) { destroy();
+
+            }
+        });
+    }
 }
