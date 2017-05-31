@@ -411,7 +411,7 @@ public class ipv4SubnetUtils {
             hostAddressList.add(new IPv4HostAddress(first.clone()));
             first[index] ++;
 
-            if(first[index] == 255) {
+            if(first[index] == 255 && !Arrays.equals(first, subnet.getBroadcast().getIpv4Address())) {
                 hostAddressList.add(new IPv4HostAddress(first.clone()));
                 l++;
                 int grupenwechsel = findGrupenwechsel(first);

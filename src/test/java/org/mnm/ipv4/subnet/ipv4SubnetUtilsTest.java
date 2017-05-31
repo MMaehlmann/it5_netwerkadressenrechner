@@ -30,7 +30,8 @@ class ipv4SubnetUtilsTest {
         s5 = new IPv4Subnet.Builder().buildByName("192.168.0.0/20");
 
         List<IPv4HostAddress> list1 = ipv4SubnetUtils.getAllHosts(s1);
-        //assertEquals(254, list1.size());
+        list1.stream().forEach(System.out::println);
+        assertEquals(254, list1.size());
 
         List<IPv4HostAddress> list3 = ipv4SubnetUtils.getAllHosts(s3);
         assertTrue(list3.isEmpty());
