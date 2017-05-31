@@ -401,6 +401,12 @@ public class ipv4SubnetUtils {
         return -1;
     }
 
+    /**
+     * Method that will create an ArrayList of all the HostAddresses of a subnet.
+     *
+     * &#64;param subnet The subnet to create the list of HostAddresses for
+     * &#64;return ArrayList&lt;IPv4HostAddress&gt; that is the list of hosts for this subnet
+     */
     public static ArrayList<IPv4HostAddress> getAllHosts(IPv4Subnet subnet) {
         int [] first = subnet.getMinHost().getIpv4Address().clone();
         int index = 3;
@@ -423,8 +429,21 @@ public class ipv4SubnetUtils {
         return hostAddressList;
     }
 
+    /**
+     * Method used to find the index of an IPv4Address.getIpAddress() array,
+     * where the last consecutive 255 is, seen from the highest index
+     *
+     * example: 255.20.255.255 -> return 2
+     *          255.255.20.255 -> return 3
+     *          255.255.20.0 -> return -1
+     *          128.255.255.255 -> return 1
+     *          255.255.255.255 -> return 0
+     *
+     * @param first the array to check on
+     * @return the index of the last consecutive 255 as seen from the highest index
+     */
     private static int findGrupenwechsel(int[] first) {
-        int ret = 0;
+        int ret = -1;
         for(int i = 3; i >= 0; i--)
             if(first[i] == 255)
                 ret = i;

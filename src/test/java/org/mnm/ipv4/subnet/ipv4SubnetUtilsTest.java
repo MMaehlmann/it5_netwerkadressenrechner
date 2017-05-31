@@ -26,19 +26,25 @@ class ipv4SubnetUtilsTest {
         s1 = new IPv4Subnet.Builder().buildByName("192.168.0.0/24");
         s2 = new IPv4Subnet.Builder().buildByName("192.168.0.0/20");
         s3 = new IPv4Subnet.Builder().buildByName("0.0.0.0/32");
-        s4 = new IPv4Subnet.Builder().buildByName("192.168.0.0/20");
-        s5 = new IPv4Subnet.Builder().buildByName("192.168.0.0/20");
+        s4 = new IPv4Subnet.Builder().buildByName("192.0.0.0/10");
+        s5 = new IPv4Subnet.Builder().buildByName("192.168.0.0/30");
 
         List<IPv4HostAddress> list1 = ipv4SubnetUtils.getAllHosts(s1);
-        list1.stream().forEach(System.out::println);
+        //list1.stream().forEach(System.out::println);
         assertEquals(254, list1.size());
 
         List<IPv4HostAddress> list3 = ipv4SubnetUtils.getAllHosts(s3);
         assertTrue(list3.isEmpty());
 
         List<IPv4HostAddress> list2 = ipv4SubnetUtils.getAllHosts(s2);
-        list2.stream().forEach(System.out::println);
+        //list2.stream().forEach(System.out::println);
         assertEquals(4094, list2.size());
+
+        List<IPv4HostAddress> list4 = ipv4SubnetUtils.getAllHosts(s4);
+        assertEquals(4194302, list4.size());
+
+        List<IPv4HostAddress> list5 = ipv4SubnetUtils.getAllHosts(s5);
+        assertEquals(2, list5.size());
 
 
     }
