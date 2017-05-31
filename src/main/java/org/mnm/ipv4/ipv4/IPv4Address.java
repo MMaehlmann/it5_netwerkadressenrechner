@@ -45,6 +45,17 @@ public abstract class IPv4Address{
     }
 
     /**
+     * <pre>
+     * converts this ipv4Address to an ipv6 String
+     *
+     * @return an IPv6 String representing this IP
+     * </pre>
+     */
+    public String toIPv6String(){
+        return "2002:0000:0000:0000:0000:0000:"+ this.toString();
+    }
+
+    /**
      * &lt;pre&gt;
      * &#64;Override
      *          toString
