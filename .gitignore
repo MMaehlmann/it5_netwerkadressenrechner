@@ -1,6 +1,2 @@
 .idea
 *.iml
-target
-resources
-genOut
-TestResources
