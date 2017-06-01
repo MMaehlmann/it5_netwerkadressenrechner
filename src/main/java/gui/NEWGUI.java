@@ -13,7 +13,7 @@ public class NEWGUI extends NEWSUBGUI{
     public NEWGUI() {
         createButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) { destroy();
+            public void actionPerformed(ActionEvent actionEvent) {
 
             }
         });
