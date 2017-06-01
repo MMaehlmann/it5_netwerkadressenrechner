@@ -21,6 +21,16 @@ class SubSubNetValidatorTest {
 
         assertFalse(validator.isValid());
 
+
+
+        IPv4Subnet subnet2 = new IPv4Subnet.Builder().buildByName("192.168.0.0/24");
+
+        IPv4Subnet subsubnet2 = new IPv4Subnet.Builder().buildByName("192.168.0.128/30");
+
+        SubSubNetValidator validator2 = new SubSubNetValidator(subnet, subsubnet);
+
+        assertTrue(validator.isValid());
+
     }
 
 }

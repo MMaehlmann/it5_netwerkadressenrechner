@@ -80,7 +80,7 @@ public class SubSubNetValidator {
     }
 
     private boolean netIDIsAvailable(IPv4NetworkID netID) {
-        return subnet.getAddressList().contains(netID);
+        return !subnet.getAddressList().contains(netID);
     }
 
     private boolean netIDIsHost(IPv4NetworkID netID) {
