@@ -7,6 +7,7 @@ import org.mnm.ipv4.ipv4.IPv4NetworkID;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -27,6 +28,8 @@ public class IPv4Subnet {
 
     private String name;
 
+    private ArrayList<IPv4Subnet> subSubNets = new ArrayList<>();
+
     public IPv4Subnet() {}
 
     /**
@@ -42,6 +45,16 @@ public class IPv4Subnet {
             .setNetworkID(builder.networkID);
     }
 
+    /**
+     * <pre>
+     * adding a host address to the list of host addresses and the list of IP addresses, if it is a
+     * valid host of this subnet
+     *
+     * &#64;param address
+     * &#64;return
+     * &#64;throws SubnetBuildingError
+     * </pre>
+     */
     public IPv4Subnet addHost(IPv4HostAddress address) throws SubnetBuildingError {
         if(ipv4SubnetUtils.isHost(address.getIpv4Address(), this)) {
             this.addressList.add(address);
@@ -51,6 +64,18 @@ public class IPv4Subnet {
 
         return this;
     }
+
+    public IPv4Subnet addSubSubNet(IPv4Subnet subsubnet) {
+        this.subSubNets.add(subsubnet);
+        return this;
+    }
+
+    public IPv4Subnet removeSubSubNet(IPv4Subnet subsubnet) {
+        this.subSubNets.remove(subsubnet);
+        return this;
+    }
+
+
 
     public IPv4Subnet removeHost(IPv4HostAddress address){
         addressList.remove(address);
