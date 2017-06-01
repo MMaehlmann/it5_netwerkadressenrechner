@@ -65,29 +65,60 @@ public class IPv4Subnet {
         return this;
     }
 
+    /**
+     * adds a subnet to the list of subsubnets
+     *
+     * &#64;param subsubnet the subsubnet to add
+     * &#64;return this
+     */
     public IPv4Subnet addSubSubNet(IPv4Subnet subsubnet) {
         this.subSubNets.add(subsubnet);
         return this;
     }
 
+    /**
+     * removes a subnet from the list of subsubnets
+     *
+     * &#64;param subsubnet the subsubnet to add
+     * &#64;return this
+     */
     public IPv4Subnet removeSubSubNet(IPv4Subnet subsubnet) {
         this.subSubNets.remove(subsubnet);
         return this;
     }
 
-
-
+    /**
+     * adds a IPv4HostAddress to the list of addresses and to
+     * the list of host addresses
+     *
+     * &#64;param address the IPv4HostAddress
+     * &#64;return this
+     */
     public IPv4Subnet removeHost(IPv4HostAddress address){
         addressList.remove(address);
         return this;
     }
 
+    /**
+     * adds a IPv4NetworkID to the list of addresses
+     * and sets its local value
+     *
+     * &#64;param address the IPv4NetworkID
+     * &#64;return this
+     */
     public IPv4Subnet addNetID(IPv4NetworkID address) {
         this.networkID = address;
         this.addressList.add(address);
         return this;
     }
 
+    /**
+     * adds a IPv4BroadcastAddress to the list of addresses
+     * and sets its local value
+     *
+     * &#64;param address the IPv4BroadcastAddress
+     * &#64;return this
+     */
     public IPv4Subnet addBroadcast(IPv4BroadcastAddress address) {
         this.broadcastAddress = address;
         this.addressList.add(address);
@@ -98,12 +129,26 @@ public class IPv4Subnet {
         return this.broadcastAddress;
     }
 
+    /**
+     * adds a IPv4BroadcastAddress to the list of addresses
+     * and sets its local value
+     *
+     * &#64;param address the IPv4BroadcastAddress
+     * &#64;return this
+     */
     public IPv4Subnet setBroadcastAddress(IPv4BroadcastAddress address) {
         this.addressList.add(address);
         this.broadcastAddress = address;
         return this;
     }
 
+    /**
+     * adds a IPv4NetworkID to the list of addresses
+     * and sets its local value
+     *
+     * &#64;param address the IPv4NetworkID
+     * &#64;return this
+     */
     public IPv4Subnet setNetworkID(IPv4NetworkID address) {
         this.addressList.add(address);
         this.networkID = address;
@@ -141,9 +186,19 @@ public class IPv4Subnet {
         return this.addressList;
     }
 
+    public List<IPv4HostAddress> getHostAddressList() { return this.hostAddresses;}
+
     public IPv4Subnet setAddressList(List<IPv4Address> addressList) {
         this.addressList = addressList;
         return this;
+    }
+
+    public void setHostAddresses(List<IPv4HostAddress> hostAddresses) {
+        this.hostAddresses = hostAddresses;
+    }
+
+    public void setSubSubNets(ArrayList<IPv4Subnet> subSubNets) {
+        this.subSubNets = subSubNets;
     }
 
     public IPv4SubnetMask getSubnetMask() {
