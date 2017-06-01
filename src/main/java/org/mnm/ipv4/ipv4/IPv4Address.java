@@ -3,6 +3,7 @@ package org.mnm.ipv4.ipv4;
 import it5.p04.fileadapter.Type;
 import org.mnm.ipv4.subnet.ipv4SubnetUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -52,7 +53,14 @@ public abstract class IPv4Address{
      * </pre>
      */
     public String toIPv6String(){
-        return "2002:0000:0000:0000:0000:0000:"+ this.toString();
+        String s = "";
+        for(int i = 0; i < 4; i++) {
+            s += Integer.toHexString(ipv4Address[i]);
+            if(i % 2 != 0)
+                s += ":";
+        }
+
+        return "2002:0000:0000:0000:0000:0000:"+ s;
     }
 
     /**
