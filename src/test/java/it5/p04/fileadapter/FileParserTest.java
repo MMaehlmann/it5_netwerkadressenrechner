@@ -26,7 +26,7 @@ class FileParserTest {
     @org.junit.jupiter.api.BeforeEach
     void setUp() throws Exception {
         subnet = new IPv4Subnet();
-        List<IPv4Address> addressList = new ArrayList<>();
+        ArrayList<IPv4Address> addressList = new ArrayList<>();
         for(int i = 1; i < 255; i++)
             addressList.add(new IPv4HostAddress(new int[]{192,168,0,i}));
         subnet

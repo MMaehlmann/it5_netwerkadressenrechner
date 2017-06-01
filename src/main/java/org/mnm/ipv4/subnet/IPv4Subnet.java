@@ -7,7 +7,6 @@ import org.mnm.ipv4.ipv4.IPv4NetworkID;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -19,14 +18,16 @@ import java.util.stream.Stream;
  */
 public class IPv4Subnet {
 
-    private List<IPv4Address> addressList = new ArrayList<>();
-    private List<IPv4HostAddress> hostAddresses = new ArrayList<>();
+    private ArrayList<IPv4Address> addressList = new ArrayList<>();
+    private ArrayList<IPv4HostAddress> hostAddresses = new ArrayList<>();
 
     private IPv4SubnetMask subnetMask;
     private IPv4BroadcastAddress broadcastAddress;
     private IPv4NetworkID networkID;
 
     private String name;
+
+    private long remainingAmountOfHosts;
 
     private ArrayList<IPv4Subnet> subSubNets = new ArrayList<>();
 
@@ -71,10 +72,10 @@ public class IPv4Subnet {
      * &#64;param subsubnet the subsubnet to add
      * &#64;return this
      */
-    public IPv4Subnet addSubSubNet(IPv4Subnet subsubnet) {
-        this.subSubNets.add(subsubnet);
-        return this;
-    }
+    /*public IPv4Subnet addSubSubNet(IPv4Subnet subsubnet) {
+
+        return;
+    }*/
 
     /**
      * removes a subnet from the list of subsubnets
@@ -186,14 +187,14 @@ public class IPv4Subnet {
         return this.addressList;
     }
 
-    public List<IPv4HostAddress> getHostAddressList() { return this.hostAddresses;}
+    public ArrayList<IPv4HostAddress> getHostAddressList() { return this.hostAddresses;}
 
-    public IPv4Subnet setAddressList(List<IPv4Address> addressList) {
+    public IPv4Subnet setAddressList(ArrayList<IPv4Address> addressList) {
         this.addressList = addressList;
         return this;
     }
 
-    public void setHostAddresses(List<IPv4HostAddress> hostAddresses) {
+    public void setHostAddresses(ArrayList<IPv4HostAddress> hostAddresses) {
         this.hostAddresses = hostAddresses;
     }
 
@@ -220,6 +221,22 @@ public class IPv4Subnet {
         int[] temp = this.getBroadcast().getIpv4Address().clone();
         temp[3] -= 1;
         return new IPv4HostAddress(temp);
+    }
+
+    /**
+     * &lt;pre&gt;
+     * sets the remaining amount of free hosts for this subnet
+     *
+     * &#64;param subsubnet the subnet that has been validated and is now added
+     * &lt;/pre&gt;
+     */
+    public void setRemainingAmountOfHosts(IPv4Subnet subsubnet) {
+        long amountOfHosts = this.subnetMask.getMaxHosts();
+        this.remainingAmountOfHosts = amountOfHosts - subsubnet.getSubnetMask().getMaxHosts();
+    }
+
+    public long getRemainingAmountOfHosts() {
+        return remainingAmountOfHosts;
     }
 
     /**
