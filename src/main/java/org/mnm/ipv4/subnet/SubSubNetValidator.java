@@ -5,6 +5,9 @@ import org.mnm.ipv4.ipv4.IPv4HostAddress;
 import org.mnm.ipv4.ipv4.IPv4NetworkID;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * This class validates if the "subsubnet" is
@@ -67,12 +70,21 @@ public class SubSubNetValidator {
         return valid;
     }
 
+    /**
+     * &lt;pre&gt;
+     * Method checks if the hosts of "subsubnetHosts" are elements of "subnetHosts"
+     *
+     * &#64param subsubnetHosts the hosts of the subsubnet
+     * &#64param subnetHosts the hosts of the subnet
+     * &#64;return
+     * &lt;/pre&gt;
+     */
     private boolean subSubNetStealsHosts(
             ArrayList<IPv4HostAddress> subsubnetHosts,
             ArrayList<IPv4HostAddress> subnetHosts) {
-        return subsubnetHosts.stream()
-                .anyMatch(h -> subnetHosts.contains(h));
-
+        List<String>  subnetHostsStrings= subnetHosts.stream().map(h -> h.toString()).collect(Collectors.toList());
+        List<String>  subsubnetHostsStrings= subsubnetHosts.stream().map(h -> h.toString()).collect(Collectors.toList());
+        return subnetHostsStrings.stream().anyMatch(s -> subsubnetHostsStrings.contains(s));
     }
 
     private boolean subSubNetFitsSubnet(long amountOfHosts, long remainingAmountOfHosts) {

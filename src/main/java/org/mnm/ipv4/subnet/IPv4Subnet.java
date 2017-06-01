@@ -44,6 +44,7 @@ public class IPv4Subnet {
             .setSubnetMask(builder.subnetMask)
             .setBroadcastAddress(builder.broadcastAddress)
             .setNetworkID(builder.networkID);
+        this.remainingAmountOfHosts = getSubnetMask().getMaxHosts();
     }
 
     /**
