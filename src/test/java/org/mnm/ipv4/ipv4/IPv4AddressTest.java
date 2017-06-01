@@ -13,7 +13,7 @@ class IPv4AddressTest {
     @Test
     void toIPv6String() {
         IPv4Address a = new IPv4HostAddress("192.168.255.255");
-        System.out.println(a.toIPv6String());
+        assertEquals("2002:0000:0000:0000:0000:0000:c0a8:ffff", a.toIPv6String());
     }
 
 }

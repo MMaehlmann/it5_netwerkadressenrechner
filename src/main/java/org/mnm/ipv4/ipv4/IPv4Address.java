@@ -60,7 +60,7 @@ public abstract class IPv4Address{
                 s += ":";
         }
 
-        return "2002:0000:0000:0000:0000:0000:"+ s;
+        return "2002:0000:0000:0000:0000:0000:"+ s.substring(0,s.length()-1);
     }
 
     /**
