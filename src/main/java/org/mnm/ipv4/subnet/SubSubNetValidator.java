@@ -1,6 +1,7 @@
 package org.mnm.ipv4.subnet;
 
 
+import org.mnm.ipv4.ipv4.IPv4Address;
 import org.mnm.ipv4.ipv4.IPv4HostAddress;
 import org.mnm.ipv4.ipv4.IPv4NetworkID;
 
@@ -64,7 +65,7 @@ public class SubSubNetValidator {
 
         if(subSubNetStealsHosts(
                 ipv4SubnetUtils.getAllHosts(subsubnet),
-                subnet.getHostAddressList()
+                subnet.getAddressList()
         ))
             valid = false;
         return valid;
@@ -81,7 +82,7 @@ public class SubSubNetValidator {
      */
     private boolean subSubNetStealsHosts(
             ArrayList<IPv4HostAddress> subsubnetHosts,
-            ArrayList<IPv4HostAddress> subnetHosts) {
+            ArrayList<IPv4Address> subnetHosts) {
         List<String>  subnetHostsStrings= subnetHosts.stream().map(h -> h.toString()).collect(Collectors.toList());
         List<String>  subsubnetHostsStrings= subsubnetHosts.stream().map(h -> h.toString()).collect(Collectors.toList());
         return subnetHostsStrings.stream().anyMatch(s -> subsubnetHostsStrings.contains(s));

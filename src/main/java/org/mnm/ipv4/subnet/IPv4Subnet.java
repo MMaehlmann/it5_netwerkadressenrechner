@@ -184,7 +184,7 @@ public class IPv4Subnet {
         return this.networkID;
     }
 
-    public List<IPv4Address> getAddressList() {
+    public ArrayList<IPv4Address> getAddressList() {
         return this.addressList;
     }
 
