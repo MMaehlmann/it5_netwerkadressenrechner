@@ -1,6 +1,8 @@
 package gui;
 
 import org.mnm.ipv4.ipv4.IPv4HostAddress;
+import org.mnm.ipv4.subnet.IPv4Subnet;
+import org.mnm.ipv4.subnet.SubnetBuildingError;
 import org.mnm.ipv4.subnet.ipv4SubnetUtils;
 
 import javax.swing.*;
@@ -9,9 +11,8 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.text.ParseException;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  * &lt;pre&gt;
@@ -23,6 +24,8 @@ import java.text.ParseException;
 public class SubnetPanel extends JPanel {
 
     private JScrollPane scrollPane;
+
+    private JComboBox<IPv4HostAddress> hostAddressSelector;
 
     private JFormattedTextField txtNetworkID1;
     private JFormattedTextField txtNetworkID2;
@@ -191,6 +194,32 @@ public class SubnetPanel extends JPanel {
             }
         });
         hostPanelButtonPane.add(btnAddHost, BorderLayout.EAST);
+
+        hostAddressSelector = new JComboBox<>();
+        hostPanelButtonPane.add(hostAddressSelector, BorderLayout.CENTER);
+        hostAddressSelector.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                transferFields();
+                try {
+                    IPv4Subnet subnet = new IPv4Subnet.Builder().buildByName(netID + "/" + ipv4SubnetUtils.calcPrefixByMask(subnetMask));
+                    hostAddressSelector.setModel(new DefaultComboBoxModel(ipv4SubnetUtils.getAllHosts(subnet).toArray()));
+                } catch (SubnetBuildingError subnetBuildingError) {
+                    subnetBuildingError.printStackTrace();
+                }
+
+
+            }
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+            @Override
+            public void mouseExited(MouseEvent e) {}
+        });
+
         btnAddHost.setToolTipText("Add a Host Address");
         btnAddHost.setIcon(new ImageIcon("resources/add.png"));
         btnAddHost.setBorderPainted(false);
