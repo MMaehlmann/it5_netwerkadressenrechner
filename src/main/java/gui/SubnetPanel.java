@@ -44,7 +44,7 @@ public class SubnetPanel extends JPanel {
     private JPanel netIDPanel;
     private JPanel panel_1;
     private JPanel subnetPanel;
-    private JPanel panel_5;
+    private JPanel buttonPanel;
     private JPanel hostPanel;
     private JPanel hostPanelRootPane;
     private JPanel hostPanelButtonPane;
@@ -147,10 +147,10 @@ public class SubnetPanel extends JPanel {
         subnetPanel.add(txtSubnetMask3);
         subnetPanel.add(txtSubnetMask4);
 
-        panel_5 = new JPanel();
-        panel_5.setBounds(5, 345, 285, 33);
-        add(panel_5);
-        panel_5.setBackground(Color.WHITE);
+        buttonPanel = new JPanel();
+        buttonPanel.setBounds(5, 345, 285, 33);
+        add(buttonPanel);
+        buttonPanel.setBackground(Color.WHITE);
 
         btnCreate = new JButton("Create");
         btnCreate.setToolTipText("Create the Subnet");
@@ -160,8 +160,8 @@ public class SubnetPanel extends JPanel {
                     subnetFrame.closeFrame();
             }
         });
-        panel_5.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        panel_5.add(btnCreate);
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        buttonPanel.add(btnCreate);
 
         btnNext = new JButton("Next");
         btnNext.addActionListener(new ActionListener() {
@@ -170,7 +170,7 @@ public class SubnetPanel extends JPanel {
                     clearFields();
             }
         });
-        panel_5.add(btnNext);
+        buttonPanel.add(btnNext);
 
         hostPanel = new JPanel();
         hostPanel.setBounds(0, 156, 285, 174);
@@ -294,7 +294,7 @@ public class SubnetPanel extends JPanel {
         if (testPassed)
             mainFrame.addSubnet(this);
         else
-            JOptionPane.showMessageDialog(panel_5 ,"This is not valid MOFO");
+            JOptionPane.showMessageDialog(buttonPanel,"This is not valid MOFO");
         return testPassed;
     }
 
