@@ -21,7 +21,7 @@ public class IpV4Marshaller {
 
         // TODO Change file path
         String fullFilePath = String.format(
-                "/Users/preichert/src/it5_netwerkadressenrechner/resources/out/%s_%s.xml",
+                "resources/out/%s_%s.xml",
                 ipV4.getName(),
                 ipV4.getIp()
         );
