@@ -20,7 +20,6 @@ public class MainFrame extends JFrame{
     private JPanel content_panel;
     private JPanel panel_2;
     private JPanel panel_3;
-    //private JPanel panel_4;
 
     private JButton btnAddSubnet;
 

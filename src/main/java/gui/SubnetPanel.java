@@ -1,14 +1,15 @@
 package gui;
 
+import org.mnm.ipv4.ipv4.IPv4HostAddress;
 import org.mnm.ipv4.subnet.ipv4SubnetUtils;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.text.MaskFormatter;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+import java.text.NumberFormat;
 import java.text.ParseException;
 
 /**
@@ -19,8 +20,6 @@ import java.text.ParseException;
  */
 @SuppressWarnings("serial")
 public class SubnetPanel extends JPanel {
-
-    private final MaskFormatter numberFormat = new MaskFormatter("###");
 
     private JScrollPane scrollPane;
 
@@ -68,6 +67,7 @@ public class SubnetPanel extends JPanel {
      * &lt;/pre&gt;
      */
     public SubnetPanel(MainFrame mainFrame, SubnetFrame subnetFrame) throws ParseException {
+
         this.setBorder(new LineBorder(new Color(0, 0, 0)));
         this.mainFrame = mainFrame;
         this.subnetFrame = subnetFrame;
@@ -105,10 +105,10 @@ public class SubnetPanel extends JPanel {
         netIDPanel.setBorder(createTitledBorder("Network ID"));
         netIDPanel.setLayout(new BoxLayout(netIDPanel, BoxLayout.X_AXIS));
 
-        txtNetworkID1 = new JFormattedTextField(numberFormat);
-        txtNetworkID2 = new JFormattedTextField(numberFormat);
-        txtNetworkID3 = new JFormattedTextField(numberFormat);
-        txtNetworkID4 = new JFormattedTextField(numberFormat);
+        txtNetworkID1 = new JFormattedTextField();
+        txtNetworkID2 = new JFormattedTextField();
+        txtNetworkID3 = new JFormattedTextField();
+        txtNetworkID4 = new JFormattedTextField();
 
         netIDPanel.add(txtNetworkID1);
         netIDPanel.add(txtNetworkID2);
@@ -122,10 +122,10 @@ public class SubnetPanel extends JPanel {
         subnetPanel.setBackground(Color.WHITE);
         subnetPanel.setLayout(new BoxLayout(subnetPanel, BoxLayout.X_AXIS));
 
-        txtSubnetMask1 = new JFormattedTextField(numberFormat);
-        txtSubnetMask2 = new JFormattedTextField(numberFormat);
-        txtSubnetMask3 = new JFormattedTextField(numberFormat);
-        txtSubnetMask4 = new JFormattedTextField(numberFormat);
+        txtSubnetMask1 = new JFormattedTextField();
+        txtSubnetMask2 = new JFormattedTextField();
+        txtSubnetMask3 = new JFormattedTextField();
+        txtSubnetMask4 = new JFormattedTextField();
 
         subnetPanel.add(txtSubnetMask1);
         subnetPanel.add(txtSubnetMask2);
@@ -174,7 +174,7 @@ public class SubnetPanel extends JPanel {
         btnAddHost = new JButton("");
         btnAddHost.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                scrollPaneViewPortPane.add(new HostLabel("192.168.0.0"));
+                scrollPaneViewPortPane.add(new HostLabel(new IPv4HostAddress("192.168.0.0")));
                 repaintScrollPaneViewPortPane();
             }
         });
@@ -201,6 +201,10 @@ public class SubnetPanel extends JPanel {
 
         panel_4.add(hostPanel);
         this.setBackground(Color.WHITE);
+    }
+
+    public void fucusTxtSubnetName(){
+        txtSubnetName.requestFocus();
     }
 
     /**
@@ -263,8 +267,26 @@ public class SubnetPanel extends JPanel {
      */
     private void transferFields() {
         this.name = this.txtSubnetName.getText();
-        this.netID = this.txtNetworkID1.getText();
-        this.subnetMask = this.txtSubnetMask1.getText();
+        this.netID = getNetIDInput();
+        this.subnetMask = getSubnetMaskInput();
+    }
+
+    private String getSubnetMaskInput() {
+        String mask = "";
+        mask += txtSubnetMask1.getText();
+        mask += "." + txtSubnetMask2.getText();
+        mask += "." + txtSubnetMask3.getText();
+        mask += "." + txtSubnetMask4.getText();
+        return mask;
+    }
+
+    private String getNetIDInput() {
+        String netID = "";
+        netID += txtNetworkID1.getText();
+        netID += "." + txtNetworkID2.getText();
+        netID += "." + txtNetworkID3.getText();
+        netID += "." + txtNetworkID4.getText();
+        return netID;
     }
 
     /**
@@ -274,8 +296,17 @@ public class SubnetPanel extends JPanel {
      */
     private void clearFields() {
         this.txtSubnetName.setText("");
+
         this.txtSubnetMask1.setText("");
+        this.txtSubnetMask2.setText("");
+        this.txtSubnetMask3.setText("");
+        this.txtSubnetMask4.setText("");
+
         this.txtNetworkID1.setText("");
+        this.txtNetworkID2.setText("");
+        this.txtNetworkID3.setText("");
+        this.txtNetworkID4.setText("");
+
         this.scrollPaneViewPortPane.removeAll();
         this.repaintScrollPaneViewPortPane();
     }
@@ -308,13 +339,15 @@ public class SubnetPanel extends JPanel {
      * &lt;/pre&gt;
      */
     private class HostLabel extends JPanel{
+        private IPv4HostAddress address;
         private String name;
         private JLabel nameLabel;
         private JButton btnEdit;
         private JButton btnDelete;
 
-        public HostLabel(String name){
-            this.name = name;
+        public HostLabel(IPv4HostAddress address){
+            this.address = address;
+            this.name = address.toString();
             this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
             this.setBackground(Color.WHITE);
 
@@ -324,6 +357,12 @@ public class SubnetPanel extends JPanel {
             btnDelete.setBorderPainted(false);
             btnDelete.setMargin(new Insets(0, 0, 0, 0));
             btnDelete.setContentAreaFilled(false);
+            btnDelete.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    destroy();
+                }
+            });
 
             btnEdit = new JButton("");
             btnEdit.setToolTipText("edit this Host Address");
@@ -343,5 +382,13 @@ public class SubnetPanel extends JPanel {
         }
 
         public String getName(){ return this.name; }
+
+        public IPv4HostAddress getAddress() { return address; }
+
+        private void destroy() {
+            scrollPaneViewPortPane.remove(this);
+            repaintScrollPaneViewPortPane();
+        }
+
     }
 }

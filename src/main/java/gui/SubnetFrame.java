@@ -2,6 +2,8 @@ package gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.text.ParseException;
 
 /**
@@ -12,6 +14,7 @@ import java.text.ParseException;
 public class SubnetFrame extends JFrame {
 
     private MainFrame mainFrame;
+    private SubnetPanel subnetPanel;
 
     /**
      * &lt;pre&gt;
@@ -36,7 +39,7 @@ public class SubnetFrame extends JFrame {
         tabbedPane.addTab("Subnet 1", null, panel_7, null);
         panel_7.setLayout(null);
         try {
-            panel_7.add(new SubnetPanel(mainFrame, this));
+            panel_7.add(subnetPanel = new SubnetPanel(mainFrame, this));
         } catch (ParseException e) {
             e.printStackTrace();
         }
