@@ -156,8 +156,8 @@ public class SubnetPanel extends JPanel {
         btnCreate.setToolTipText("Create the Subnet");
         btnCreate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                sendSubnet();
-                subnetFrame.closeFrame();
+                if(sendSubnet())
+                    subnetFrame.closeFrame();
             }
         });
         panel_5.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -189,7 +189,7 @@ public class SubnetPanel extends JPanel {
         btnAddHost = new JButton("");
         btnAddHost.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                scrollPaneViewPortPane.add(new HostLabel(new IPv4HostAddress("192.168.0.0")));
+                scrollPaneViewPortPane.add(new HostLabel((IPv4HostAddress) hostAddressSelector.getSelectedItem()));
                 repaintScrollPaneViewPortPane();
             }
         });
@@ -293,6 +293,8 @@ public class SubnetPanel extends JPanel {
 
         if (testPassed)
             mainFrame.addSubnet(this);
+        else
+            JOptionPane.showMessageDialog(panel_5 ,"This is not valid MOFO");
         return testPassed;
     }
 
