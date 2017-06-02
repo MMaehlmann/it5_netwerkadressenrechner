@@ -207,6 +207,31 @@ public class SubnetPanel extends JPanel {
         txtSubnetName.requestFocus();
     }
 
+    public void addIsIntEvent(JFormattedTextField textField) {
+
+        textField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                try {
+                    int input = Integer.parseInt(textField.getText());
+                    textField.setSelectedTextColor(new Color(102, 204, 0));
+                } catch (NumberFormatException nfe) {
+                    textField.setSelectedTextColor(new Color(204,0,0));
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });
+    }
+
     /**
      * &lt;pre&gt;
      * Method creating a default TitledBorder with the provided Title
