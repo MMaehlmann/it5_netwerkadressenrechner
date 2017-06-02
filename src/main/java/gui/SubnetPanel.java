@@ -5,9 +5,11 @@ import org.mnm.ipv4.subnet.ipv4SubnetUtils;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 
 /**
  * &lt;pre&gt;
@@ -18,17 +20,27 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("serial")
 public class SubnetPanel extends JPanel {
 
+    private final MaskFormatter numberFormat = new MaskFormatter("###");
+
     private JScrollPane scrollPane;
 
-    private JTextField txtNetworkID;
-    private JTextField txtSubnetMask;
+    private JFormattedTextField txtNetworkID1;
+    private JFormattedTextField txtNetworkID2;
+    private JFormattedTextField txtNetworkID3;
+    private JFormattedTextField txtNetworkID4;
+
+    private JFormattedTextField txtSubnetMask1;
+    private JFormattedTextField txtSubnetMask2;
+    private JFormattedTextField txtSubnetMask3;
+    private JFormattedTextField txtSubnetMask4;
+
     private JTextField txtSubnetName;
 
     private JPanel panel_3;
     private JPanel panel_4;
-    private JPanel panel_2;
+    private JPanel netIDPanel;
     private JPanel panel_1;
-    private JPanel panel;
+    private JPanel subnetPanel;
     private JPanel panel_5;
     private JPanel hostPanel;
     private JPanel hostPanelRootPane;
@@ -55,7 +67,7 @@ public class SubnetPanel extends JPanel {
      * &#64;param subnetFrame the subnetFrame
      * &lt;/pre&gt;
      */
-    public SubnetPanel(MainFrame mainFrame, SubnetFrame subnetFrame) {
+    public SubnetPanel(MainFrame mainFrame, SubnetFrame subnetFrame) throws ParseException {
         this.setBorder(new LineBorder(new Color(0, 0, 0)));
         this.mainFrame = mainFrame;
         this.subnetFrame = subnetFrame;
@@ -86,27 +98,39 @@ public class SubnetPanel extends JPanel {
         txtSubnetName.setToolTipText("The name of the subnet");
         txtSubnetName.setColumns(10);
 
-        panel_2 = new JPanel();
-        panel_2.setBounds(0, 52, 285, 41);
-        panel_4.add(panel_2);
-        panel_2.setBackground(Color.WHITE);
-        panel_2.setBorder(createTitledBorder("Network ID"));
-        panel_2.setLayout(new BorderLayout(0, 0));
+        netIDPanel = new JPanel();
+        netIDPanel.setBounds(0, 52, 285, 41);
+        panel_4.add(netIDPanel);
+        netIDPanel.setBackground(Color.WHITE);
+        netIDPanel.setBorder(createTitledBorder("Network ID"));
+        netIDPanel.setLayout(new BoxLayout(netIDPanel, BoxLayout.X_AXIS));
 
-        txtNetworkID = new JTextField();
-        panel_2.add(txtNetworkID);
-        txtNetworkID.setColumns(10);
+        txtNetworkID1 = new JFormattedTextField(numberFormat);
+        txtNetworkID2 = new JFormattedTextField(numberFormat);
+        txtNetworkID3 = new JFormattedTextField(numberFormat);
+        txtNetworkID4 = new JFormattedTextField(numberFormat);
 
-        panel = new JPanel();
-        panel.setBounds(0, 104, 285, 41);
-        panel_4.add(panel);
-        panel.setBorder(createTitledBorder("Subnet Mask"));
-        panel.setBackground(Color.WHITE);
-        panel.setLayout(new BorderLayout(0, 0));
+        netIDPanel.add(txtNetworkID1);
+        netIDPanel.add(txtNetworkID2);
+        netIDPanel.add(txtNetworkID3);
+        netIDPanel.add(txtNetworkID4);
 
-        txtSubnetMask = new JTextField();
-        panel.add(txtSubnetMask);
-        txtSubnetMask.setColumns(10);
+        subnetPanel = new JPanel();
+        subnetPanel.setBounds(0, 104, 285, 41);
+        panel_4.add(subnetPanel);
+        subnetPanel.setBorder(createTitledBorder("Subnet Mask"));
+        subnetPanel.setBackground(Color.WHITE);
+        subnetPanel.setLayout(new BoxLayout(subnetPanel, BoxLayout.X_AXIS));
+
+        txtSubnetMask1 = new JFormattedTextField(numberFormat);
+        txtSubnetMask2 = new JFormattedTextField(numberFormat);
+        txtSubnetMask3 = new JFormattedTextField(numberFormat);
+        txtSubnetMask4 = new JFormattedTextField(numberFormat);
+
+        subnetPanel.add(txtSubnetMask1);
+        subnetPanel.add(txtSubnetMask2);
+        subnetPanel.add(txtSubnetMask3);
+        subnetPanel.add(txtSubnetMask4);
 
         panel_5 = new JPanel();
         panel_5.setBounds(5, 345, 285, 33);
@@ -206,12 +230,12 @@ public class SubnetPanel extends JPanel {
         }
 
         if(!ipv4SubnetUtils.isValidIP(this.netID)){
-            this.updateTextArea(this.txtNetworkID);
+            this.updateTextArea(this.txtNetworkID1);
             testPassed = false;
         }
 
         if(!ipv4SubnetUtils.isValidSubnetMask(this.subnetMask)){
-            this.updateTextArea(this.txtSubnetMask);
+            this.updateTextArea(this.txtSubnetMask1);
             testPassed = false;
         }
 
@@ -239,8 +263,8 @@ public class SubnetPanel extends JPanel {
      */
     private void transferFields() {
         this.name = this.txtSubnetName.getText();
-        this.netID = this.txtNetworkID.getText();
-        this.subnetMask = this.txtSubnetMask.getText();
+        this.netID = this.txtNetworkID1.getText();
+        this.subnetMask = this.txtSubnetMask1.getText();
     }
 
     /**
@@ -250,8 +274,8 @@ public class SubnetPanel extends JPanel {
      */
     private void clearFields() {
         this.txtSubnetName.setText("");
-        this.txtSubnetMask.setText("");
-        this.txtNetworkID.setText("");
+        this.txtSubnetMask1.setText("");
+        this.txtNetworkID1.setText("");
         this.scrollPaneViewPortPane.removeAll();
         this.repaintScrollPaneViewPortPane();
     }

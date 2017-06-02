@@ -2,6 +2,7 @@ package gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.ParseException;
 
 /**
  * SubnetFrame is a JFrame, that is used to create a new Subnet from TextFields, etc.
@@ -34,7 +35,11 @@ public class SubnetFrame extends JFrame {
         panel_7.setBackground(Color.WHITE);
         tabbedPane.addTab("Subnet 1", null, panel_7, null);
         panel_7.setLayout(null);
-        panel_7.add(new SubnetPanel(mainFrame, this));
+        try {
+            panel_7.add(new SubnetPanel(mainFrame, this));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         setVisible(true);
     }
 
