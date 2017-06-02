@@ -87,6 +87,18 @@ public class ipv4SubnetUtils {
 
     /**
      * &lt;pre&gt;
+     * calculating the prefix by its subnetMask
+     *
+     * &#64;param subnetMask to breate the prefix from
+     * &#64;return int, the prefix
+     * &lt;/pre&gt;
+     */
+    public static int calcPrefixByMask(String subnetMask) {
+       return calcPrefixByMask(Arrays.stream(subnetMask.split("\\.")).mapToInt(Integer::parseInt).toArray());
+    }
+
+    /**
+     * &lt;pre&gt;
      * method to calculate the maximum amount of hosts of a subnet by a given prefix
      * &#64;param prefix prefix of a subnet
      * &#64;return long maximum amount of hosts of that prefix

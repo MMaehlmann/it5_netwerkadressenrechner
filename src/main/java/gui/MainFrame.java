@@ -1,5 +1,11 @@
 package gui;
 
+import org.mnm.ipv4.ipv4.IPv4NetworkID;
+import org.mnm.ipv4.subnet.IPv4Subnet;
+import org.mnm.ipv4.subnet.IPv4SubnetMask;
+import org.mnm.ipv4.subnet.SubnetBuildingError;
+import org.mnm.ipv4.subnet.ipv4SubnetUtils;
+
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
@@ -149,6 +155,8 @@ public class MainFrame extends JFrame{
         private JButton btnEdit;
         private JButton btnDelete;
 
+        private IPv4Subnet subnet;
+
         public SubnetLabel(SubnetPanel sPanel){
             this.name = sPanel.getName();
             this.subnetMask = sPanel.getSubnetMask();
@@ -156,6 +164,13 @@ public class MainFrame extends JFrame{
             this.setLayout(new FlowLayout(FlowLayout.RIGHT));
             this.setBackground(Color.WHITE);
             this.setMaximumSize(new Dimension(400, 40));
+            try {
+                this.subnet = new IPv4Subnet.Builder()
+                        .buildByName(netID + "/" + ipv4SubnetUtils.calcPrefixByMask(subnetMask));
+            } catch (SubnetBuildingError subnetBuildingError) {
+                subnetBuildingError.printStackTrace();
+            }
+            subnet.setName(name);
 
             btnDelete = new JButton("");
             btnDelete.setToolTipText("delete this Host Address");
@@ -195,12 +210,9 @@ public class MainFrame extends JFrame{
          */
         private JLabel buildLabel() {
             String label = "";
-            if(!this.name.isEmpty())
-                label += this.name + " | ";
-            if(!this.netID.isEmpty())
-                label += this.netID + " | ";
-            if(!this.subnetMask.isEmpty())
-                label += this.subnetMask;
+                label += this.subnet.getName() + " | ";
+                label += this.subnet.getNetID() + "/";
+                label += this.subnet.getSubnetMask().getPrefix();
             return new JLabel(label);
         }
 

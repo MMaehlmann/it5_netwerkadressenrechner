@@ -68,10 +68,10 @@ public class SubnetPanel extends JPanel {
      * &lt;/pre&gt;
      */
     public SubnetPanel(MainFrame mainFrame, SubnetFrame subnetFrame){
-        this.run();
+        this.run(mainFrame, subnetFrame);
     }
 
-    private void run() {
+    private void run(MainFrame mainFrame, SubnetFrame subnetFrame) {
         this.setBorder(new LineBorder(new Color(0, 0, 0)));
         this.mainFrame = mainFrame;
         this.subnetFrame = subnetFrame;
@@ -247,11 +247,18 @@ public class SubnetPanel extends JPanel {
 
         if (!ipv4SubnetUtils.isValidIP(this.netID)) {
             this.updateTextArea(this.txtNetworkID1);
+            this.updateTextArea(this.txtNetworkID2);
+            this.updateTextArea(this.txtNetworkID3);
+            this.updateTextArea(this.txtNetworkID4);
             testPassed = false;
         }
 
         if (!ipv4SubnetUtils.isValidSubnetMask(this.subnetMask)) {
             this.updateTextArea(this.txtSubnetMask1);
+            this.updateTextArea(this.txtSubnetMask2);
+            this.updateTextArea(this.txtSubnetMask3);
+            this.updateTextArea(this.txtSubnetMask4);
+
             testPassed = false;
         }
 
@@ -276,6 +283,7 @@ public class SubnetPanel extends JPanel {
     /**
      * &lt;pre&gt;
      * getting the text from the JTextFields and storing them in variables
+     * &lt;/pre&gt;
      */
     private void transferFields() {
         this.name = this.txtSubnetName.getText();
