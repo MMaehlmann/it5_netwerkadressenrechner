@@ -6,10 +6,11 @@ import org.mnm.ipv4.subnet.ipv4SubnetUtils;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.awt.event.*;
-import java.text.NumberFormat;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.text.ParseException;
 
 /**
@@ -57,7 +58,7 @@ public class SubnetPanel extends JPanel {
 
     private String name = "", subnetMask = "", netID = "";
 
-    private Color textColor = new Color(51,153,255);
+    private Color textColor = new Color(51, 153, 255);
 
     /**
      * &lt;pre&gt;
@@ -66,8 +67,11 @@ public class SubnetPanel extends JPanel {
      * &#64;param subnetFrame the subnetFrame
      * &lt;/pre&gt;
      */
-    public SubnetPanel(MainFrame mainFrame, SubnetFrame subnetFrame) throws ParseException {
+    public SubnetPanel(MainFrame mainFrame, SubnetFrame subnetFrame){
+        this.run();
+    }
 
+    private void run() {
         this.setBorder(new LineBorder(new Color(0, 0, 0)));
         this.mainFrame = mainFrame;
         this.subnetFrame = subnetFrame;
@@ -106,9 +110,13 @@ public class SubnetPanel extends JPanel {
         netIDPanel.setLayout(new BoxLayout(netIDPanel, BoxLayout.X_AXIS));
 
         txtNetworkID1 = new JFormattedTextField();
+        txtNetworkID1.setDocument(new TxtFieldFormatter());
         txtNetworkID2 = new JFormattedTextField();
+        txtNetworkID2.setDocument(new TxtFieldFormatter());
         txtNetworkID3 = new JFormattedTextField();
+        txtNetworkID3.setDocument(new TxtFieldFormatter());
         txtNetworkID4 = new JFormattedTextField();
+        txtNetworkID4.setDocument(new TxtFieldFormatter());
 
         netIDPanel.add(txtNetworkID1);
         netIDPanel.add(txtNetworkID2);
@@ -123,9 +131,13 @@ public class SubnetPanel extends JPanel {
         subnetPanel.setLayout(new BoxLayout(subnetPanel, BoxLayout.X_AXIS));
 
         txtSubnetMask1 = new JFormattedTextField();
+        txtSubnetMask1.setDocument(new TxtFieldFormatter());
         txtSubnetMask2 = new JFormattedTextField();
+        txtSubnetMask2.setDocument(new TxtFieldFormatter());
         txtSubnetMask3 = new JFormattedTextField();
+        txtSubnetMask3.setDocument(new TxtFieldFormatter());
         txtSubnetMask4 = new JFormattedTextField();
+        txtSubnetMask4.setDocument(new TxtFieldFormatter());
 
         subnetPanel.add(txtSubnetMask1);
         subnetPanel.add(txtSubnetMask2);
@@ -151,7 +163,7 @@ public class SubnetPanel extends JPanel {
         btnNext = new JButton("Next");
         btnNext.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                if(sendSubnet())
+                if (sendSubnet())
                     clearFields();
             }
         });
@@ -191,7 +203,7 @@ public class SubnetPanel extends JPanel {
         hostPanelScrollPaneAncor.setLayout(new BorderLayout(0, 0));
 
         scrollPane = new JScrollPane();
-        hostPanelScrollPaneAncor.add(scrollPane,BorderLayout.CENTER);
+        hostPanelScrollPaneAncor.add(scrollPane, BorderLayout.CENTER);
 
         scrollPaneViewPortPane = new JPanel();
         scrollPaneViewPortPane.setBackground(Color.WHITE);
@@ -203,33 +215,8 @@ public class SubnetPanel extends JPanel {
         this.setBackground(Color.WHITE);
     }
 
-    public void fucusTxtSubnetName(){
+    public void fucusTxtSubnetName() {
         txtSubnetName.requestFocus();
-    }
-
-    public void addIsIntEvent(JFormattedTextField textField) {
-
-        textField.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-                try {
-                    int input = Integer.parseInt(textField.getText());
-                    textField.setSelectedTextColor(new Color(102, 204, 0));
-                } catch (NumberFormatException nfe) {
-                    textField.setSelectedTextColor(new Color(204,0,0));
-                }
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-
-            }
-        });
     }
 
     /**
@@ -253,22 +240,22 @@ public class SubnetPanel extends JPanel {
     private boolean sendSubnet() {
         this.transferFields();
         boolean testPassed = true;
-        if(this.name.isEmpty()) {
+        if (this.name.isEmpty()) {
             this.updateTextArea(this.txtSubnetName);
             testPassed = false;
         }
 
-        if(!ipv4SubnetUtils.isValidIP(this.netID)){
+        if (!ipv4SubnetUtils.isValidIP(this.netID)) {
             this.updateTextArea(this.txtNetworkID1);
             testPassed = false;
         }
 
-        if(!ipv4SubnetUtils.isValidSubnetMask(this.subnetMask)){
+        if (!ipv4SubnetUtils.isValidSubnetMask(this.subnetMask)) {
             this.updateTextArea(this.txtSubnetMask1);
             testPassed = false;
         }
 
-        if(testPassed)
+        if (testPassed)
             mainFrame.addSubnet(this);
         return testPassed;
     }
@@ -336,11 +323,12 @@ public class SubnetPanel extends JPanel {
         this.repaintScrollPaneViewPortPane();
     }
 
-    /**
-     * &lt;pre&gt;
-     * repainting and revalidating the scrollPaneViewPortPane
-     * &lt;/pre&gt;
-     */
+                /**
+                 * &lt;pre&gt;
+                 * repainting and revalidating the scrollPaneViewPortPane
+                 * &lt;/pre&gt;
+                 */
+
     private void repaintScrollPaneViewPortPane() {
         this.scrollPaneViewPortPane.revalidate();
         this.scrollPaneViewPortPane.repaint();
@@ -363,14 +351,14 @@ public class SubnetPanel extends JPanel {
      * private class describing an ipv4 host address
      * &lt;/pre&gt;
      */
-    private class HostLabel extends JPanel{
+    private class HostLabel extends JPanel {
         private IPv4HostAddress address;
         private String name;
         private JLabel nameLabel;
         private JButton btnEdit;
         private JButton btnDelete;
 
-        public HostLabel(IPv4HostAddress address){
+        public HostLabel(IPv4HostAddress address) {
             this.address = address;
             this.name = address.toString();
             this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -400,15 +388,19 @@ public class SubnetPanel extends JPanel {
             nameLabel.setBackground(Color.WHITE);
             nameLabel.setOpaque(true);
             this.add(nameLabel);
-            this.add(Box.createRigidArea(new Dimension(100,0)));
+            this.add(Box.createRigidArea(new Dimension(100, 0)));
             this.add(btnEdit);
-            this.add(Box.createRigidArea(new Dimension(25,0)));
+            this.add(Box.createRigidArea(new Dimension(25, 0)));
             this.add(btnDelete);
         }
 
-        public String getName(){ return this.name; }
+        public String getName() {
+            return this.name;
+        }
 
-        public IPv4HostAddress getAddress() { return address; }
+        public IPv4HostAddress getAddress() {
+            return address;
+        }
 
         private void destroy() {
             scrollPaneViewPortPane.remove(this);
