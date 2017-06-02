@@ -171,7 +171,7 @@ public class SubnetPanel extends JPanel {
 
         hostPanel = new JPanel();
         hostPanel.setBounds(0, 156, 285, 174);
-        hostPanel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 1, true), "Host Addresses", TitledBorder.LEADING, TitledBorder.TOP, null, textColor));
+        hostPanel.setBorder(createTitledBorder("Host Addresses"));
         hostPanel.setBackground(Color.WHITE);
         hostPanel.setLayout(new BorderLayout(0, 0));
 
