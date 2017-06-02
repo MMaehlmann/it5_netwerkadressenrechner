@@ -1,2 +1,11 @@
 .idea
 *.iml
+resources/out/192.168.1.1
+resources/out/192.168.1.1.xml
+resources/out/Niklas_192.168.1.10.xml
+resources/out/test_it5l.xml
+target/classes/*
+target/classes/main/
+target/classes/persistence/
+target/generated-sources/*
+target/generated-test-sources/*
