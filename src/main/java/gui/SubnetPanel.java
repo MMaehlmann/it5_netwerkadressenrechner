@@ -322,6 +322,7 @@ public class SubnetPanel extends JPanel {
         this.subnetMask = getSubnetMaskInput();
     }
 
+
     private String getSubnetMaskInput() {
         String mask = "";
         mask += txtSubnetMask1.getText();
