@@ -294,7 +294,11 @@ public class SubnetPanel extends JPanel {
         if (testPassed)
             mainFrame.addSubnet(this);
         else
-            JOptionPane.showMessageDialog(buttonPanel,"This is not valid MOFO");
+            JOptionPane.showMessageDialog(buttonPanel,
+                    "This is not valid MOFO.",
+                    "Inane error",
+                    JOptionPane.ERROR_MESSAGE);
+
         return testPassed;
     }
 
