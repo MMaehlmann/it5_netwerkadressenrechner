@@ -58,7 +58,7 @@ public class SubnetPanel extends JPanel {
     private JButton btnNext;
     private JButton btnCreate;
     private JButton btnAddHost;
-
+    private JButton btnFillHostAddressSelector;
     private String name = "", subnetMask = "", netID = "";
 
     private Color textColor = new Color(51, 153, 255);
@@ -186,20 +186,10 @@ public class SubnetPanel extends JPanel {
         hostPanelRootPane.add(hostPanelButtonPane, BorderLayout.NORTH);
         hostPanelButtonPane.setLayout(new BorderLayout(0, 0));
 
-        btnAddHost = new JButton("");
-        btnAddHost.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                scrollPaneViewPortPane.add(new HostLabel((IPv4HostAddress) hostAddressSelector.getSelectedItem()));
-                repaintScrollPaneViewPortPane();
-            }
-        });
-        hostPanelButtonPane.add(btnAddHost, BorderLayout.EAST);
-
-        hostAddressSelector = new JComboBox<>();
-        hostPanelButtonPane.add(hostAddressSelector, BorderLayout.CENTER);
-        hostAddressSelector.addMouseListener(new MouseListener() {
+        btnFillHostAddressSelector = new JButton("Fill Hosts");
+        btnFillHostAddressSelector.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 transferFields();
                 try {
                     IPv4Subnet subnet = new IPv4Subnet.Builder().buildByName(netID + "/" + ipv4SubnetUtils.calcPrefixByMask(subnetMask));
@@ -207,18 +197,23 @@ public class SubnetPanel extends JPanel {
                 } catch (SubnetBuildingError subnetBuildingError) {
                     subnetBuildingError.printStackTrace();
                 }
-
-
             }
-            @Override
-            public void mousePressed(MouseEvent e) {}
-            @Override
-            public void mouseReleased(MouseEvent e) {}
-            @Override
-            public void mouseEntered(MouseEvent e) {}
-            @Override
-            public void mouseExited(MouseEvent e) {}
         });
+        hostPanelButtonPane.add(btnFillHostAddressSelector, BorderLayout.WEST);
+
+        btnAddHost = new JButton("");
+        btnAddHost.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                scrollPaneViewPortPane.add(new HostLabel((IPv4HostAddress) hostAddressSelector.getSelectedItem()));
+                hostAddressSelector.removeItemAt(hostAddressSelector.getSelectedIndex());
+                repaintScrollPaneViewPortPane();
+            }
+        });
+        hostPanelButtonPane.add(btnAddHost, BorderLayout.EAST);
+
+        hostAddressSelector = new JComboBox<>();
+        hostPanelButtonPane.add(hostAddressSelector, BorderLayout.CENTER);
+
 
         btnAddHost.setToolTipText("Add a Host Address");
         btnAddHost.setIcon(new ImageIcon("resources/add.png"));
