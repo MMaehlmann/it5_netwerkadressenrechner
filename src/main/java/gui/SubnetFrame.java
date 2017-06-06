@@ -74,7 +74,6 @@ public class SubnetFrame extends JFrame {
     public void addTab(JPanel panel) {
         increment++;
         this.tabbedPane.addTab("SubSubNet" + increment, panel);
-
     }
 
     /**

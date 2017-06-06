@@ -1,6 +1,5 @@
 package gui;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.mnm.ipv4.ipv4.IPv4HostAddress;
 import org.mnm.ipv4.subnet.IPv4Subnet;
 import org.mnm.ipv4.subnet.SubnetBuildingError;
@@ -23,6 +22,7 @@ import java.util.ArrayList;
 @SuppressWarnings("serial")
 public class SubnetPanel extends JPanel {
 
+    private final SubnetPanel subnetPanel = this;
     private JScrollPane scrollPane;
 
     private JComboBox<IPv4HostAddress> hostAddressSelector;
@@ -45,7 +45,7 @@ public class SubnetPanel extends JPanel {
     private JPanel panel_4;
     private JPanel netIDPanel;
     private JPanel panel_1;
-    private JPanel subnetPanel;
+    private JPanel subnetMaskPanel;
     private JPanel buttonPanel;
     private JPanel hostPanel;
     private JPanel hostPanelRootPane;
@@ -169,12 +169,12 @@ public class SubnetPanel extends JPanel {
         netIDPanel.add(txtNetworkID3);
         netIDPanel.add(txtNetworkID4);
 
-        subnetPanel = new JPanel();
-        subnetPanel.setBounds(0, 104, 285, 41);
-        panel_4.add(subnetPanel);
-        subnetPanel.setBorder(createTitledBorder("Subnet Mask"));
-        subnetPanel.setBackground(Color.WHITE);
-        subnetPanel.setLayout(new BoxLayout(subnetPanel, BoxLayout.X_AXIS));
+        subnetMaskPanel = new JPanel();
+        subnetMaskPanel.setBounds(0, 104, 285, 41);
+        panel_4.add(subnetMaskPanel);
+        subnetMaskPanel.setBorder(createTitledBorder("Subnet Mask"));
+        subnetMaskPanel.setBackground(Color.WHITE);
+        subnetMaskPanel.setLayout(new BoxLayout(subnetMaskPanel, BoxLayout.X_AXIS));
 
         txtSubnetMask1 = new JFormattedTextField();
         txtSubnetMask1.setDocument(new TxtFieldFormatter());
@@ -185,10 +185,10 @@ public class SubnetPanel extends JPanel {
         txtSubnetMask4 = new JFormattedTextField();
         txtSubnetMask4.setDocument(new TxtFieldFormatter());
 
-        subnetPanel.add(txtSubnetMask1);
-        subnetPanel.add(txtSubnetMask2);
-        subnetPanel.add(txtSubnetMask3);
-        subnetPanel.add(txtSubnetMask4);
+        subnetMaskPanel.add(txtSubnetMask1);
+        subnetMaskPanel.add(txtSubnetMask2);
+        subnetMaskPanel.add(txtSubnetMask3);
+        subnetMaskPanel.add(txtSubnetMask4);
 
         buttonPanel = new JPanel();
         buttonPanel.setBounds(5, 345, 285, 33);
@@ -381,6 +381,11 @@ public class SubnetPanel extends JPanel {
         return testPassed;
     }
 
+    public void addHostLabel(IPv4HostAddress address) {
+        this.scrollPaneViewPortPane.add(new HostLabel(address));
+        this.repaintScrollPaneViewPortPane();
+    }
+
     /**
      * &lt;pre&gt;
      * revalidating and repainting the specified JTextField
@@ -474,16 +479,17 @@ public class SubnetPanel extends JPanel {
      * private class describing an ipv4 host address
      * &lt;/pre&gt;
      */
-    private class HostLabel extends JPanel {
+    public class HostLabel extends JPanel {
         private IPv4HostAddress address;
         private String name;
         private JLabel nameLabel;
         private JButton btnEdit;
         private JButton btnDelete;
 
+        private HostLabel hostLabel = this;
+
         public HostLabel(IPv4HostAddress address) {
-            this.address = address;
-            this.name = address.toString();
+            setHostAddress(address);
             this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
             this.setBackground(Color.WHITE);
 
@@ -506,13 +512,20 @@ public class SubnetPanel extends JPanel {
             btnEdit.setBorderPainted(false);
             btnEdit.setMargin(new Insets(0, 0, 0, 0));
             btnEdit.setContentAreaFilled(false);
+            btnEdit.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    JEditPane edit = new JEditPane(hostLabel, subnetPanel, JEditPane.HOST_EDIT_OPERATION);
+                    destroy();
+                }
+            });
 
             nameLabel = new JLabel(name);
             nameLabel.setBackground(Color.WHITE);
             nameLabel.setOpaque(true);
             this.add(nameLabel);
             this.add(Box.createRigidArea(new Dimension(100, 0)));
-            //this.add(btnEdit);
+            this.add(btnEdit);
             this.add(Box.createRigidArea(new Dimension(25, 0)));
             this.add(btnDelete);
         }
@@ -530,5 +543,13 @@ public class SubnetPanel extends JPanel {
             repaintScrollPaneViewPortPane();
         }
 
+        public IPv4HostAddress getHostAddress() {
+            return this.address;
+        }
+
+        public void setHostAddress(IPv4HostAddress address) {
+            this.address = address;
+            this.name = address.toString();
+        }
     }
 }
