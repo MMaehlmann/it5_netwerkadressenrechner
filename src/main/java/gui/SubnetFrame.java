@@ -1,5 +1,7 @@
 package gui;
 
+import org.mnm.ipv4.subnet.IPv4Subnet;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
@@ -46,6 +48,26 @@ public class SubnetFrame extends JFrame {
         tabbedPane.addTab("Subnet 1", null, panel_7, null);
         panel_7.setLayout(null);
         panel_7.add(subnetPanel = new SubnetPanel(mainFrame, this));
+        setVisible(true);
+    }
+
+    public SubnetFrame(MainFrame mainFrame, IPv4Subnet subnet) {
+        this.mainFrame = mainFrame;
+        setTitle("Edit Subnet");
+        setResizable(false);
+        setSize(new Dimension(300, 500));
+        setLocationRelativeTo(null);
+        getContentPane().setBackground(Color.WHITE);
+        getContentPane().setLayout(new BorderLayout(0, 0));
+
+        tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+        getContentPane().add(tabbedPane);
+
+        panel_7 = new JPanel();
+        panel_7.setBackground(Color.WHITE);
+        tabbedPane.addTab("Subnet 1", null, panel_7, null);
+        panel_7.setLayout(null);
+        panel_7.add(subnetPanel = new SubnetPanel(mainFrame, this, subnet));
         setVisible(true);
     }
 

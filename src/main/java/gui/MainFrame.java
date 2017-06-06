@@ -75,13 +75,13 @@ public class MainFrame extends JFrame {
         panel_3.setBackground(Color.WHITE);
         getContentPane().add(panel_3, BorderLayout.EAST);
 
-        //panel_4 = new JPanel();
-        //panel_4.setBorder(createTitledBorder("Tabs"));
-        //panel_4.setBackground(Color.WHITE);
-        //getContentPane().add(panel_4, BorderLayout.NORTH);
         setForeground(Color.WHITE);
         setBackground(Color.WHITE);
         setVisible(true);
+    }
+
+    private MainFrame getFrame()  {
+        return this;
     }
 
     /**
@@ -180,6 +180,13 @@ public class MainFrame extends JFrame {
             btnEdit.setBorderPainted(false);
             btnEdit.setMargin(new Insets(0, 0, 0, 0));
             btnEdit.setContentAreaFilled(false);
+            btnEdit.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    initPopulatedSubnetFrame();
+                    destroy();
+                }
+            });
 
             nameLabel = buildLabel();
             nameLabel.setBackground(Color.WHITE);
@@ -217,6 +224,10 @@ public class MainFrame extends JFrame {
          */
         private void destroy() {
             destroyChild(content_panel, this);
+        }
+
+        private void initPopulatedSubnetFrame() {
+            SubnetFrame subnetFrame = new SubnetFrame(getFrame(), this.subnet);
         }
     }
 }

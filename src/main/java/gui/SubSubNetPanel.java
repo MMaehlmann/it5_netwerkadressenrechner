@@ -174,6 +174,8 @@ public class SubSubNetPanel extends JPanel {
 
         btnFillHostAddressSelector = new JButton("Fill Hosts");
         btnFillHostAddressSelector.addActionListener(new ActionListener() {
+            private IPv4Subnet subnet;
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 transferFields();

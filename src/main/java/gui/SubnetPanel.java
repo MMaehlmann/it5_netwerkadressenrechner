@@ -1,5 +1,6 @@
 package gui;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.mnm.ipv4.ipv4.IPv4HostAddress;
 import org.mnm.ipv4.subnet.IPv4Subnet;
 import org.mnm.ipv4.subnet.SubnetBuildingError;
@@ -76,6 +77,44 @@ public class SubnetPanel extends JPanel {
      */
     public SubnetPanel(MainFrame mainFrame, SubnetFrame subnetFrame){
         this.run(mainFrame, subnetFrame);
+    }
+
+    public SubnetPanel(MainFrame mainFrame, SubnetFrame subnetFrame, IPv4Subnet subnet) {
+        run(mainFrame, subnetFrame);
+        this.subnet = subnet;
+        populateFields();
+    }
+
+    private void populateFields() {
+        this.txtSubnetName.setText(this.subnet.getName());
+
+        populateNetID(this.subnet.getNetID().toString());
+
+        populateSubnetMask(this.subnet.getSubnetMask().toString());
+
+        populateHostAddresses(this.subnet.getHostAddressList());
+    }
+
+    private void populateHostAddresses(ArrayList<IPv4HostAddress> hostAddressList) {
+        hostAddressList.stream()
+                .forEach(h -> {
+                    this.scrollPaneViewPortPane.add(new HostLabel(h));
+                    this.hostAddresses.add(h);
+                });
+    }
+
+    private void populateSubnetMask(String s) {
+        this.txtSubnetMask1.setText(s.split("\\.")[0]);
+        this.txtSubnetMask2.setText(s.split("\\.")[1]);
+        this.txtSubnetMask3.setText(s.split("\\.")[2]);
+        this.txtSubnetMask4.setText(s.split("\\.")[3]);
+    }
+
+    private void populateNetID(String s) {
+        this.txtNetworkID1.setText(s.split("\\.")[0]);
+        this.txtNetworkID2.setText(s.split("\\.")[1]);
+        this.txtNetworkID3.setText(s.split("\\.")[2]);
+        this.txtNetworkID4.setText(s.split("\\.")[3]);
     }
 
     private void run(MainFrame mainFrame, SubnetFrame subnetFrame) {
@@ -474,7 +513,7 @@ public class SubnetPanel extends JPanel {
             nameLabel.setOpaque(true);
             this.add(nameLabel);
             this.add(Box.createRigidArea(new Dimension(100, 0)));
-            this.add(btnEdit);
+            //this.add(btnEdit);
             this.add(Box.createRigidArea(new Dimension(25, 0)));
             this.add(btnDelete);
         }
