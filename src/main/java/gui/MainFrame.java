@@ -1,5 +1,6 @@
 package gui;
 
+import org.mnm.ipv4.ipv4.IPv4HostAddress;
 import org.mnm.ipv4.ipv4.IPv4NetworkID;
 import org.mnm.ipv4.subnet.IPv4Subnet;
 import org.mnm.ipv4.subnet.IPv4SubnetMask;
@@ -12,6 +13,7 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  * &lt;pre&gt;
@@ -107,8 +109,8 @@ public class MainFrame extends JFrame{
      * &#64;param sPanel
      * &lt;/pre&gt;
      */
-    public void addSubnet(SubnetPanel sPanel) {
-        content_panel.add(new SubnetLabel(sPanel));
+    public void addSubnet(SubnetPanel sPanel, ArrayList<IPv4HostAddress> hostList) {
+        content_panel.add(new SubnetLabel(sPanel, hostList));
         refreshContentPanel();
     }
 
@@ -157,7 +159,7 @@ public class MainFrame extends JFrame{
 
         private IPv4Subnet subnet;
 
-        public SubnetLabel(SubnetPanel sPanel){
+        public SubnetLabel(SubnetPanel sPanel, ArrayList<IPv4HostAddress> hostList){
             this.name = sPanel.getName();
             this.subnetMask = sPanel.getSubnetMask();
             this.netID = sPanel.getNetID();
@@ -171,6 +173,7 @@ public class MainFrame extends JFrame{
                 subnetBuildingError.printStackTrace();
             }
             subnet.setName(name);
+            subnet.setHostAddresses(hostList);
 
             btnDelete = new JButton("");
             btnDelete.setToolTipText("delete this Host Address");
@@ -200,6 +203,7 @@ public class MainFrame extends JFrame{
             this.add(btnEdit);
             this.add(Box.createRigidArea(new Dimension(10,0)));
             this.add(btnDelete);
+            subnet.print();
         }
 
         /**

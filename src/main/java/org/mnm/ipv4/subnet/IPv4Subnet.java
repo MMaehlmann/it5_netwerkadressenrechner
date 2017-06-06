@@ -199,6 +199,8 @@ public class IPv4Subnet {
 
     public void setHostAddresses(ArrayList<IPv4HostAddress> hostAddresses) {
         this.hostAddresses = hostAddresses;
+        for(IPv4HostAddress h : hostAddresses)
+            this.addressList.add(h);
     }
 
     public void setSubSubNets(ArrayList<IPv4Subnet> subSubNets) {

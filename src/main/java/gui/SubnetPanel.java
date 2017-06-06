@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 /**
  * &lt;pre&gt;
@@ -26,6 +27,8 @@ public class SubnetPanel extends JPanel {
     private JScrollPane scrollPane;
 
     private JComboBox<IPv4HostAddress> hostAddressSelector;
+
+    private ArrayList<IPv4HostAddress> hostAddresses = new ArrayList<>();
 
     private JFormattedTextField txtNetworkID1;
     private JFormattedTextField txtNetworkID2;
@@ -207,6 +210,7 @@ public class SubnetPanel extends JPanel {
                 scrollPaneViewPortPane.add(new HostLabel((IPv4HostAddress) hostAddressSelector.getSelectedItem()));
                 hostAddressSelector.removeItemAt(hostAddressSelector.getSelectedIndex());
                 repaintScrollPaneViewPortPane();
+                hostAddresses.add((IPv4HostAddress) hostAddressSelector.getSelectedItem());
             }
         });
         hostPanelButtonPane.add(btnAddHost, BorderLayout.EAST);
@@ -287,7 +291,7 @@ public class SubnetPanel extends JPanel {
         }
 
         if (testPassed)
-            mainFrame.addSubnet(this);
+            mainFrame.addSubnet(this, this.hostAddresses);
         else
             JOptionPane.showMessageDialog(buttonPanel,
                     "This is not valid MOFO.",
