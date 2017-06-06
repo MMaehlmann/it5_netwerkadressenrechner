@@ -263,7 +263,7 @@ public class SubSubNetPanel extends JPanel {
      * &#64;return boolean
      * &lt;/pre&gt;
      */
-    private boolean assembleSubnet() {
+    public IPv4Subnet assembleSubnet() {
         this.transferFields();
         boolean testPassed = true;
         if (this.name.isEmpty()) {
@@ -300,11 +300,11 @@ public class SubSubNetPanel extends JPanel {
         }
         else
             JOptionPane.showMessageDialog(buttonPanel,
-                    "This is not valid MOFO.",
-                    "Inane error",
+                    "This is not a valid subsubnet.",
+                    "SubSubNetBuilding error",
                     JOptionPane.ERROR_MESSAGE);
 
-        return testPassed;
+        return this.subnet;
     }
 
     /**
@@ -393,6 +393,10 @@ public class SubSubNetPanel extends JPanel {
 
     public String getNetID() {
         return this.netID;
+    }
+
+    public IPv4Subnet getSubnet() {
+        return subnet;
     }
 
     /**

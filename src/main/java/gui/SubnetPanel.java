@@ -162,7 +162,7 @@ public class SubnetPanel extends JPanel {
             public void actionPerformed(ActionEvent arg0) {
                 if(assembleSubnet()){
                     sendSubnet();
-                    subnetFrame.getSubSubNetPanels();
+                    addSubSubNets();
                     subnetFrame.closeFrame();
                 }
 
@@ -259,6 +259,14 @@ public class SubnetPanel extends JPanel {
 
         panel_4.add(hostPanel);
         this.setBackground(Color.WHITE);
+    }
+
+    private void addSubSubNets() {
+        ArrayList<SubSubNetPanel> subSubNetPanels = subnetFrame.getSubSubNetPanels();
+        for(SubSubNetPanel s : subSubNetPanels){
+            s.assembleSubnet().print();
+            this.subnet.addSubSubNet(s.assembleSubnet());
+        }
     }
 
     private void sendSubnet() {

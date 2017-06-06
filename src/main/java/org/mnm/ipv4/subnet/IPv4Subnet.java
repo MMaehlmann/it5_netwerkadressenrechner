@@ -77,6 +77,7 @@ public class IPv4Subnet {
         SubSubNetValidator validator = new SubSubNetValidator(this, subsubnet);
         if(validator.isValid())
             this.subSubNets.add(subsubnet);
+
         return this;
     }
 
@@ -180,6 +181,8 @@ public class IPv4Subnet {
                 .forEach((IPv4Address a) -> {
                     System.out.println(a.getClass().toString() + ": " + a);
                 });
+        subSubNets.stream()
+                .forEach(s -> s.print());
     }
 
     public IPv4NetworkID getNetID() {
