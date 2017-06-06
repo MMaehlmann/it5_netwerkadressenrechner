@@ -279,6 +279,7 @@ public class ipv4SubnetUtils {
     }
 
 
+
     /**
      * &lt;pre&gt;
      * netID = (ip &amp; mask) &amp; 255

@@ -49,25 +49,30 @@ public class SubSubNetValidator {
      */
     public boolean isValid() {
 
-        boolean valid = true;
+        if(this.subnet.getNetID().toString().equals(this.subsubnet.getNetID().toString()))
+              return false;
+
+        if(this.subnet.getSubnetMask().toString().equals(this.subsubnet.getSubnetMask().toString()))
+            return false;
 
         if(!netIDIsHost(subsubnet.getNetID()))
-            valid = false;
+            return false;
 
         if(!netIDIsAvailable(subsubnet.getNetID()))
-            valid = false;
+            return false;
 
         if(!subSubNetFitsSubnet(
                 subsubnet.getSubnetMask().getMaxHosts(),
                 subnet.getRemainingAmountOfHosts()))
-            valid = false;
+            return false;
 
         if(subSubNetStealsHosts(
                 ipv4SubnetUtils.getAllHosts(subsubnet),
                 subnet.getAddressList()
         ))
-            valid = false;
-        return valid;
+            return false;
+
+        return true;
     }
 
     /**

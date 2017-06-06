@@ -303,7 +303,6 @@ public class SubnetPanel extends JPanel {
     private void addSubSubNets() {
         ArrayList<SubSubNetPanel> subSubNetPanels = subnetFrame.getSubSubNetPanels();
         for(SubSubNetPanel s : subSubNetPanels){
-            s.assembleSubnet().print();
             this.subnet.addSubSubNet(s.assembleSubnet());
         }
     }
