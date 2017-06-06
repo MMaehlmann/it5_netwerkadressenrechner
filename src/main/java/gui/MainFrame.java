@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * &lt;/pre&gt;
  */
 @SuppressWarnings("serial")
-public class MainFrame extends JFrame{
+public class MainFrame extends JFrame {
 
     private JPanel button_panel;
     private JPanel content_panel;
@@ -31,7 +31,7 @@ public class MainFrame extends JFrame{
 
     private JButton btnAddSubnet;
 
-    private Color textColor = new Color(51,153,255);
+    private Color textColor = new Color(51, 153, 255);
 
 
     /**
@@ -40,7 +40,7 @@ public class MainFrame extends JFrame{
      * &lt;/pre&gt;
      */
     public MainFrame() {
-        setSize(new Dimension(400,450));
+        setSize(new Dimension(400, 450));
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setBackground(Color.WHITE);
@@ -109,8 +109,8 @@ public class MainFrame extends JFrame{
      * &#64;param sPanel
      * &lt;/pre&gt;
      */
-    public void addSubnet(SubnetPanel sPanel, ArrayList<IPv4HostAddress> hostList) {
-        content_panel.add(new SubnetLabel(sPanel, hostList));
+    public void addSubnet(IPv4Subnet subnet) {
+        content_panel.add(new SubnetLabel(subnet));
         refreshContentPanel();
     }
 
@@ -151,29 +151,15 @@ public class MainFrame extends JFrame{
      * private class holding a subnet in the content_panel
      * &lt;/pre&gt;
      */
-    private class SubnetLabel extends JPanel{
-        private String name, subnetMask, netID;
+    private class SubnetLabel extends JPanel {
         private JLabel nameLabel;
         private JButton btnEdit;
         private JButton btnDelete;
 
         private IPv4Subnet subnet;
 
-        public SubnetLabel(SubnetPanel sPanel, ArrayList<IPv4HostAddress> hostList){
-            this.name = sPanel.getName();
-            this.subnetMask = sPanel.getSubnetMask();
-            this.netID = sPanel.getNetID();
-            this.setLayout(new FlowLayout(FlowLayout.RIGHT));
-            this.setBackground(Color.WHITE);
-            this.setMaximumSize(new Dimension(400, 40));
-            try {
-                this.subnet = new IPv4Subnet.Builder()
-                        .buildByName(netID + "/" + ipv4SubnetUtils.calcPrefixByMask(subnetMask));
-            } catch (SubnetBuildingError subnetBuildingError) {
-                subnetBuildingError.printStackTrace();
-            }
-            subnet.setName(name);
-            subnet.setHostAddresses(hostList);
+        public SubnetLabel(IPv4Subnet subnet) {
+            this.subnet = subnet;
 
             btnDelete = new JButton("");
             btnDelete.setToolTipText("delete this Host Address");
@@ -199,9 +185,9 @@ public class MainFrame extends JFrame{
             nameLabel.setBackground(Color.WHITE);
             nameLabel.setOpaque(true);
             this.add(nameLabel);
-            this.add(Box.createRigidArea(new Dimension(10,0)));
+            this.add(Box.createRigidArea(new Dimension(10, 0)));
             this.add(btnEdit);
-            this.add(Box.createRigidArea(new Dimension(10,0)));
+            this.add(Box.createRigidArea(new Dimension(10, 0)));
             this.add(btnDelete);
             subnet.print();
         }
@@ -214,13 +200,15 @@ public class MainFrame extends JFrame{
          */
         private JLabel buildLabel() {
             String label = "";
-                label += this.subnet.getName() + " | ";
-                label += this.subnet.getNetID() + "/";
-                label += this.subnet.getSubnetMask().getPrefix();
+            label += this.subnet.getName() + " | ";
+            label += this.subnet.getNetID() + "/";
+            label += this.subnet.getSubnetMask().getPrefix();
             return new JLabel(label);
         }
 
-        public String getName(){ return this.name; }
+        public String getName() {
+            return this.subnet.getName();
+        }
 
         /**
          * &lt;pre&gt;
@@ -228,7 +216,7 @@ public class MainFrame extends JFrame{
          * &lt;/pre&gt;
          */
         private void destroy() {
-            destroyChild(content_panel,this);
+            destroyChild(content_panel, this);
         }
     }
 }

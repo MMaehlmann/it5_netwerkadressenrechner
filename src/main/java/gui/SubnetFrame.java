@@ -16,6 +16,12 @@ public class SubnetFrame extends JFrame {
     private MainFrame mainFrame;
     private SubnetPanel subnetPanel;
 
+    private JTabbedPane tabbedPane;
+
+    private JPanel panel_7;
+
+    private static int increment = 0;
+
     /**
      * &lt;pre&gt;
      * constructor creating the frame
@@ -26,20 +32,26 @@ public class SubnetFrame extends JFrame {
         this.mainFrame = mainFrame;
         setTitle("Create Subnet");
         setResizable(false);
-        setSize(new Dimension(300, 450));
+        setSize(new Dimension(300, 500));
         setLocationRelativeTo(null);
         getContentPane().setBackground(Color.WHITE);
         getContentPane().setLayout(new BorderLayout(0, 0));
 
-        JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+        tabbedPane = new JTabbedPane(JTabbedPane.TOP);
         getContentPane().add(tabbedPane);
 
-        JPanel panel_7 = new JPanel();
+        panel_7 = new JPanel();
         panel_7.setBackground(Color.WHITE);
         tabbedPane.addTab("Subnet 1", null, panel_7, null);
         panel_7.setLayout(null);
         panel_7.add(subnetPanel = new SubnetPanel(mainFrame, this));
         setVisible(true);
+    }
+
+    public void addTab(JPanel panel) {
+        increment++;
+        this.tabbedPane.addTab("SubSubNet" + increment, panel);
+
     }
 
     /**
@@ -49,5 +61,9 @@ public class SubnetFrame extends JFrame {
      */
     public void closeFrame() {
         this.dispose();
+    }
+
+    public JTabbedPane getTabbedPane() {
+        return tabbedPane;
     }
 }

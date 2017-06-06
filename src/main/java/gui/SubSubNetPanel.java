@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * &lt;/pre&gt;
  */
 @SuppressWarnings("serial")
-public class SubnetPanel extends JPanel {
+public class SubSubNetPanel extends JPanel {
 
     private JScrollPane scrollPane;
 
@@ -56,16 +56,13 @@ public class SubnetPanel extends JPanel {
     private MainFrame mainFrame;
     private SubnetFrame subnetFrame;
 
-    private JButton btnNext;
-    private JButton btnCreate;
     private JButton btnAddHost;
     private JButton btnFillHostAddressSelector;
-    private JButton btnAddSubSubNet;
+    private JButton btnClose;
 
     private String name = "", subnetMask = "", netID = "";
 
     private Color textColor = new Color(51, 153, 255);
-    private IPv4Subnet subnet;
 
     /**
      * &lt;pre&gt;
@@ -74,7 +71,7 @@ public class SubnetPanel extends JPanel {
      * &#64;param subnetFrame the subnetFrame
      * &lt;/pre&gt;
      */
-    public SubnetPanel(MainFrame mainFrame, SubnetFrame subnetFrame){
+    public SubSubNetPanel(MainFrame mainFrame, SubnetFrame subnetFrame){
         this.run(mainFrame, subnetFrame);
     }
 
@@ -156,38 +153,6 @@ public class SubnetPanel extends JPanel {
         add(buttonPanel);
         buttonPanel.setBackground(Color.WHITE);
 
-        btnCreate = new JButton("Create");
-        btnCreate.setToolTipText("Create the Subnet");
-        btnCreate.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                if(assembleSubnet())
-                    subnetFrame.closeFrame();
-            }
-        });
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        buttonPanel.add(btnCreate);
-
-        btnAddSubSubNet = new JButton("Add SubSubNet");
-        btnAddSubSubNet.setToolTipText("This button will add a subsubnet, that is part of this subnet.");
-        btnAddSubSubNet.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                subnetFrame.addTab(new SubSubNetPanel(mainFrame, subnetFrame));
-            }
-        });
-        buttonPanel.add(btnAddSubSubNet);
-
-        btnNext = new JButton("Next");
-        btnNext.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                if (assembleSubnet()) {
-                    sendSubnet();
-                    clearFields();
-                }
-            }
-        });
-        buttonPanel.add(btnNext);
-
         hostPanel = new JPanel();
         hostPanel.setBounds(0, 156, 285, 174);
         hostPanel.setBorder(createTitledBorder("Host Addresses"));
@@ -252,16 +217,23 @@ public class SubnetPanel extends JPanel {
         scrollPaneViewPortPane.setAlignmentX(LEFT_ALIGNMENT);
         scrollPane.setViewportView(scrollPaneViewPortPane);
 
+        btnClose = new JButton("Close");
+        btnClose.setToolTipText("This button closes the current Tab");
+        btnClose.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Component selected = subnetFrame.getTabbedPane().getSelectedComponent();
+                if (selected != null) {
+
+                    subnetFrame.getTabbedPane().remove(selected);
+            }
+        }
+        });
+
+        buttonPanel.add(btnClose);
+
         panel_4.add(hostPanel);
         this.setBackground(Color.WHITE);
-    }
-
-    private void sendSubnet() {
-        mainFrame.addSubnet(this.subnet);
-    }
-
-    public IPv4Subnet getSubnet() {
-        return this.subnet;
     }
 
     public void fucusTxtSubnetName() {
@@ -286,7 +258,7 @@ public class SubnetPanel extends JPanel {
      * &#64;return boolean
      * &lt;/pre&gt;
      */
-    private boolean assembleSubnet() {
+    private boolean sendSubnet() {
         this.transferFields();
         boolean testPassed = true;
         if (this.name.isEmpty()) {
@@ -311,15 +283,9 @@ public class SubnetPanel extends JPanel {
             testPassed = false;
         }
 
-        if (testPassed){
-            try {
-                this.subnet = new IPv4Subnet.Builder()
-                        .buildByName(this.netID + "/" + ipv4SubnetUtils.calcPrefixByMask(this.subnetMask));
-                this.subnet.setHostAddresses(this.hostAddresses);
-            } catch (SubnetBuildingError subnetBuildingError) {
-                subnetBuildingError.printStackTrace();
-            }
-        }
+        if (testPassed)
+            //subnetPanel.get
+            System.out.println();
         else
             JOptionPane.showMessageDialog(buttonPanel,
                     "This is not valid MOFO.",
@@ -394,11 +360,11 @@ public class SubnetPanel extends JPanel {
         this.repaintScrollPaneViewPortPane();
     }
 
-                /**
-                 * &lt;pre&gt;
-                 * repainting and revalidating the scrollPaneViewPortPane
-                 * &lt;/pre&gt;
-                 */
+    /**
+     * &lt;pre&gt;
+     * repainting and revalidating the scrollPaneViewPortPane
+     * &lt;/pre&gt;
+     */
 
     private void repaintScrollPaneViewPortPane() {
         this.scrollPaneViewPortPane.revalidate();
