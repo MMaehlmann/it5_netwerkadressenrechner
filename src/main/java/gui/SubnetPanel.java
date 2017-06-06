@@ -160,8 +160,11 @@ public class SubnetPanel extends JPanel {
         btnCreate.setToolTipText("Create the Subnet");
         btnCreate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                if(assembleSubnet())
+                if(assembleSubnet()){
+                    sendSubnet();
                     subnetFrame.closeFrame();
+                }
+
             }
         });
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -315,6 +318,7 @@ public class SubnetPanel extends JPanel {
             try {
                 this.subnet = new IPv4Subnet.Builder()
                         .buildByName(this.netID + "/" + ipv4SubnetUtils.calcPrefixByMask(this.subnetMask));
+                this.subnet.setName(this.name);
                 this.subnet.setHostAddresses(this.hostAddresses);
             } catch (SubnetBuildingError subnetBuildingError) {
                 subnetBuildingError.printStackTrace();
