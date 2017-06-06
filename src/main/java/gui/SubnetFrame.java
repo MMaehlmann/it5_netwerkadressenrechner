@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.text.ParseException;
+import java.util.ArrayList;
 
 /**
  * SubnetFrame is a JFrame, that is used to create a new Subnet from TextFields, etc.
@@ -65,5 +66,14 @@ public class SubnetFrame extends JFrame {
 
     public JTabbedPane getTabbedPane() {
         return tabbedPane;
+    }
+
+    public ArrayList<SubSubNetPanel> getSubSubNetPanels() {
+        ArrayList<SubSubNetPanel> subSubNetPanels = new ArrayList<>();
+        for (int i = 0; i < this.tabbedPane.getTabCount(); i++) {
+            if(tabbedPane.getComponentAt(i).getClass() == SubSubNetPanel.class)
+                subSubNetPanels.add((SubSubNetPanel) tabbedPane.getComponentAt(i));
+        }
+        return subSubNetPanels;
     }
 }

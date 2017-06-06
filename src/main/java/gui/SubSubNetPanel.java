@@ -24,6 +24,8 @@ public class SubSubNetPanel extends JPanel {
 
     private JScrollPane scrollPane;
 
+    private IPv4Subnet rootSubnet;
+
     private JComboBox<IPv4HostAddress> hostAddressSelector;
 
     private ArrayList<IPv4HostAddress> hostAddresses = new ArrayList<>();
@@ -63,6 +65,7 @@ public class SubSubNetPanel extends JPanel {
     private String name = "", subnetMask = "", netID = "";
 
     private Color textColor = new Color(51, 153, 255);
+    private IPv4Subnet subnet;
 
     /**
      * &lt;pre&gt;
@@ -71,11 +74,13 @@ public class SubSubNetPanel extends JPanel {
      * &#64;param subnetFrame the subnetFrame
      * &lt;/pre&gt;
      */
-    public SubSubNetPanel(MainFrame mainFrame, SubnetFrame subnetFrame){
+    public SubSubNetPanel(MainFrame mainFrame, SubnetFrame subnetFrame, IPv4Subnet subnet) {
         this.run(mainFrame, subnetFrame);
     }
 
     private void run(MainFrame mainFrame, SubnetFrame subnetFrame) {
+        this.rootSubnet = subnet;
+
         this.setBorder(new LineBorder(new Color(0, 0, 0)));
         this.mainFrame = mainFrame;
         this.subnetFrame = subnetFrame;
@@ -226,8 +231,8 @@ public class SubSubNetPanel extends JPanel {
                 if (selected != null) {
 
                     subnetFrame.getTabbedPane().remove(selected);
+                }
             }
-        }
         });
 
         buttonPanel.add(btnClose);
@@ -254,11 +259,11 @@ public class SubSubNetPanel extends JPanel {
 
     /**
      * &lt;pre&gt;
-     * sending the subnet specified in the JTextFields to the MainFrame.content_pane, after testing the params
+     * assembnling the subnet specified in the JTextFields to the MainFrame.content_pane, after testing the params
      * &#64;return boolean
      * &lt;/pre&gt;
      */
-    private boolean sendSubnet() {
+    private boolean assembleSubnet() {
         this.transferFields();
         boolean testPassed = true;
         if (this.name.isEmpty()) {
@@ -283,9 +288,16 @@ public class SubSubNetPanel extends JPanel {
             testPassed = false;
         }
 
-        if (testPassed)
-            //subnetPanel.get
-            System.out.println();
+        if (testPassed) {
+            try {
+                this.subnet = new IPv4Subnet.Builder()
+                        .buildByName(this.netID + "/" + ipv4SubnetUtils.calcPrefixByMask(this.subnetMask));
+                this.subnet.setName(this.name);
+                this.subnet.setHostAddresses(this.hostAddresses);
+            } catch (SubnetBuildingError subnetBuildingError) {
+                subnetBuildingError.printStackTrace();
+            }
+        }
         else
             JOptionPane.showMessageDialog(buttonPanel,
                     "This is not valid MOFO.",

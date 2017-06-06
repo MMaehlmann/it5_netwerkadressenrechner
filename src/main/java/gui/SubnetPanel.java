@@ -162,6 +162,7 @@ public class SubnetPanel extends JPanel {
             public void actionPerformed(ActionEvent arg0) {
                 if(assembleSubnet()){
                     sendSubnet();
+                    subnetFrame.getSubSubNetPanels();
                     subnetFrame.closeFrame();
                 }
 
@@ -175,7 +176,7 @@ public class SubnetPanel extends JPanel {
         btnAddSubSubNet.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                subnetFrame.addTab(new SubSubNetPanel(mainFrame, subnetFrame));
+                subnetFrame.addTab(new SubSubNetPanel(mainFrame, subnetFrame, subnet));
             }
         });
         buttonPanel.add(btnAddSubSubNet);
@@ -185,6 +186,7 @@ public class SubnetPanel extends JPanel {
             public void actionPerformed(ActionEvent arg0) {
                 if (assembleSubnet()) {
                     sendSubnet();
+                    subnetFrame.getSubSubNetPanels();
                     clearFields();
                 }
             }
