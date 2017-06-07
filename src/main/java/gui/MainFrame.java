@@ -149,6 +149,7 @@ public class MainFrame extends JFrame {
         private JLabel nameLabel;
         private JButton btnEdit;
         private JButton btnDelete;
+        private JButton btnSave;
 
         private IPv4Subnet subnet;
 
@@ -165,6 +166,19 @@ public class MainFrame extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     destroy();
+                }
+            });
+
+            btnSave = new JButton("");
+            btnSave.setToolTipText("delete this Host Address");
+            btnSave.setIcon(new ImageIcon("resources/save.png"));
+            btnSave.setBorderPainted(false);
+            btnSave.setMargin(new Insets(0, 0, 0, 0));
+            btnSave.setContentAreaFilled(false);
+            btnSave.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    //TODO implement save operation
                 }
             });
 
@@ -186,6 +200,8 @@ public class MainFrame extends JFrame {
             nameLabel.setBackground(Color.WHITE);
             nameLabel.setOpaque(true);
             this.add(nameLabel);
+            this.add(Box.createRigidArea(new Dimension(10, 0)));
+            this.add(btnSave);
             this.add(Box.createRigidArea(new Dimension(10, 0)));
             this.add(btnEdit);
             this.add(Box.createRigidArea(new Dimension(10, 0)));
