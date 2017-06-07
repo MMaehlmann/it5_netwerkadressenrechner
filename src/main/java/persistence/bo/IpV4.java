@@ -5,11 +5,12 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Optional;
 
 /**
  * Created by preichert on 30/05/2017.
  */
-@XmlRootElement
+@XmlRootElement(name = "ipv4")
 public class IpV4 {
 
     private String name;
@@ -78,7 +79,7 @@ public class IpV4 {
         return subSubNet;
     }
 
-    @XmlElement
+    @XmlElement(name = "ipv4")
     public void setSubSubNet(ArrayList<IpV4> subSubNet) {
         this.subSubNet = subSubNet;
     }

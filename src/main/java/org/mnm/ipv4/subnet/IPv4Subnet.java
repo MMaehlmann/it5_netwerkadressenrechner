@@ -26,6 +26,10 @@ public class IPv4Subnet {
 
     private String name;
 
+    public void setRemainingAmountOfHosts(long remainingAmountOfHosts) {
+        this.remainingAmountOfHosts = remainingAmountOfHosts;
+    }
+
     private long remainingAmountOfHosts;
 
     public ArrayList<IPv4Subnet> getSubSubNets() {
@@ -47,7 +51,7 @@ public class IPv4Subnet {
             .setSubnetMask(builder.subnetMask)
             .setBroadcastAddress(builder.broadcastAddress)
             .setNetworkID(builder.networkID);
-        this.remainingAmountOfHosts = getSubnetMask().getMaxHosts();
+        this.remainingAmountOfHosts = builder.getRemainingAmountOfHosts();
     }
 
     /**
@@ -268,6 +272,17 @@ public class IPv4Subnet {
         private IPv4BroadcastAddress broadcastAddress;
         private IPv4NetworkID networkID;
         private String name;
+
+        public long getRemainingAmountOfHosts() {
+            return remainingAmountOfHosts;
+        }
+
+        public IPv4Subnet.Builder setRemainingAmountOfHosts(long remainingAmountOfHosts) {
+            this.remainingAmountOfHosts = remainingAmountOfHosts;
+            return this;
+        }
+
+        private long remainingAmountOfHosts;
 
         public IPv4Subnet.Builder subnetMask(IPv4SubnetMask subnetMask) {
             this.subnetMask = subnetMask;

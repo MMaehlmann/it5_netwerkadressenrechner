@@ -110,8 +110,9 @@ public class MainFrame extends JFrame {
     private IPv4Subnet createSubnet(Optional<IpV4> ipV4) {
 
         IPv4Subnet subnet = createIPv4Subnet(ipV4);
-        for(IpV4 i : ipV4.get().getSubSubNet())
-            subnet.addSubSubNet(createIPv4Subnet(i));
+        if(!ipV4.get().getSubSubNet().isEmpty())
+            for(IpV4 i : ipV4.get().getSubSubNet())
+                subnet.addSubSubNet(createIPv4Subnet(i));
 
         return subnet;
     }
@@ -123,7 +124,8 @@ public class MainFrame extends JFrame {
                     .setName(ipV4.get().getName())
                     .setSubnetMask(new IPv4SubnetMask.Builder().buildByString(ipV4.get().getSubnetmask()))
                     .setNetworkID(new IPv4NetworkID(ipV4.get().getNetId()))
-                    .setBroadcastAddress(new IPv4BroadcastAddress(ipV4.get().getBroadcast()));
+                    .setBroadcastAddress(new IPv4BroadcastAddress(ipV4.get().getBroadcast()))
+                    .setRemainingAmountOfHosts(subnet.getSubnetMask().getMaxHosts());
             ArrayList<IPv4HostAddress> hostAddresses = new ArrayList<>();
             for(String s : ipV4.get().getHosts())
                 hostAddresses.add(new IPv4HostAddress(s));
@@ -148,8 +150,6 @@ public class MainFrame extends JFrame {
             for(String s : ipV4.getHosts())
                 hostAddresses.add(new IPv4HostAddress(s));
             subnet.setHostAddresses(hostAddresses);
-
-
         } catch (SubnetBuildingError subnetBuildingError) {
             subnetBuildingError.printStackTrace();
         } catch (FalsePrefixExeption falsePrefixExeption) {
