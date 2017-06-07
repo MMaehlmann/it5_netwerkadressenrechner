@@ -24,6 +24,7 @@ public class MainFrame extends JFrame {
     private JPanel panel_3;
 
     private JButton btnAddSubnet;
+    private JButton btnLoad;
 
     private Color textColor = new Color(51, 153, 255);
 
@@ -54,7 +55,20 @@ public class MainFrame extends JFrame {
         btnAddSubnet.setToolTipText("opens a new window to define a new subnet");
         btnAddSubnet.setForeground(Color.BLACK);
         btnAddSubnet.setFont(new Font("Tahoma", Font.PLAIN, 13));
+
+        btnLoad = new JButton("Load");
+        btnLoad.setToolTipText("This button is able to load a saved subnet");
+        btnLoad.setForeground(Color.BLACK);
+        btnLoad.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        btnLoad.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //TODO implement
+            }
+        });
+
         button_panel.add(btnAddSubnet);
+        button_panel.add(btnLoad);
 
         content_panel = new JPanel();
         content_panel.setBackground(Color.WHITE);
