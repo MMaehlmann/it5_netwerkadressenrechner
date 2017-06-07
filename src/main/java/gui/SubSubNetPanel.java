@@ -46,12 +46,11 @@ public class SubSubNetPanel extends JPanel {
     private JPanel panel_4;
     private JPanel netIDPanel;
     private JPanel panel_1;
-    private JPanel subnetPanel;
+    private JPanel subnetMaskPanel;
     private JPanel buttonPanel;
     private JPanel hostPanel;
     private JPanel hostPanelRootPane;
     private JPanel hostPanelButtonPane;
-
     private JPanel scrollPaneViewPortPane;
     private JPanel hostPanelScrollPaneAncor;
 
@@ -61,11 +60,14 @@ public class SubSubNetPanel extends JPanel {
     private JButton btnAddHost;
     private JButton btnFillHostAddressSelector;
     private JButton btnClose;
+    private JButton btnCreate;
 
     private String name = "", subnetMask = "", netID = "";
 
     private Color textColor = new Color(51, 153, 255);
     private IPv4Subnet subnet;
+    private SubnetPanel subnetPanel;
+    private IPv4Subnet subSubNet;
 
     /**
      * &lt;pre&gt;
@@ -74,12 +76,52 @@ public class SubSubNetPanel extends JPanel {
      * &#64;param subnetFrame the subnetFrame
      * &lt;/pre&gt;
      */
-    public SubSubNetPanel(MainFrame mainFrame, SubnetFrame subnetFrame, IPv4Subnet subnet) {
-        this.run(mainFrame, subnetFrame);
+    public SubSubNetPanel(MainFrame mainFrame, SubnetFrame subnetFrame, SubnetPanel subnetPanel, IPv4Subnet subnet) {
+        this.run(mainFrame, subnetFrame, subnetPanel, subnet);
     }
 
-    private void run(MainFrame mainFrame, SubnetFrame subnetFrame) {
+    public SubSubNetPanel(MainFrame mainFrame, SubnetFrame subnetFrame, SubnetPanel subnetPanel, IPv4Subnet subnet, IPv4Subnet subSubNet) {
+        this.run(mainFrame, subnetFrame, subnetPanel, subnet);
+        this.populateFields(subSubNet);
+    }
+
+    private void populateFields(IPv4Subnet subSubNet) {
+        this.subSubNet = subSubNet;
+        this.txtSubnetName.setText(this.subSubNet.getName());
+
+        populateNetID(this.subSubNet.getNetID().toString());
+
+        populateSubnetMask(this.subSubNet.getSubnetMask().toString());
+
+        populateHostAddresses(this.subSubNet.getHostAddressList());
+    }
+
+    private void populateSubnetMask(String s) {
+        this.txtSubnetMask1.setText(s.split("\\.")[0]);
+        this.txtSubnetMask2.setText(s.split("\\.")[1]);
+        this.txtSubnetMask3.setText(s.split("\\.")[2]);
+        this.txtSubnetMask4.setText(s.split("\\.")[3]);
+    }
+
+    private void populateNetID(String s) {
+        this.txtNetworkID1.setText(s.split("\\.")[0]);
+        this.txtNetworkID2.setText(s.split("\\.")[1]);
+        this.txtNetworkID3.setText(s.split("\\.")[2]);
+        this.txtNetworkID4.setText(s.split("\\.")[3]);
+    }
+
+    private void populateHostAddresses(ArrayList<IPv4HostAddress> hostAddressList) {
+        hostAddressList.stream()
+                .forEach(h -> {
+                    this.scrollPaneViewPortPane.add(new HostLabel(h));
+                    this.hostAddresses.add(h);
+                });
+    }
+
+    private void run(MainFrame mainFrame, SubnetFrame subnetFrame, SubnetPanel subnetPanel, IPv4Subnet subnet) {
         this.rootSubnet = subnet;
+
+        this.subnetPanel = subnetPanel;
 
         this.setBorder(new LineBorder(new Color(0, 0, 0)));
         this.mainFrame = mainFrame;
@@ -132,12 +174,12 @@ public class SubSubNetPanel extends JPanel {
         netIDPanel.add(txtNetworkID3);
         netIDPanel.add(txtNetworkID4);
 
-        subnetPanel = new JPanel();
-        subnetPanel.setBounds(0, 104, 285, 41);
-        panel_4.add(subnetPanel);
-        subnetPanel.setBorder(createTitledBorder("Subnet Mask"));
-        subnetPanel.setBackground(Color.WHITE);
-        subnetPanel.setLayout(new BoxLayout(subnetPanel, BoxLayout.X_AXIS));
+        this.subnetMaskPanel = new JPanel();
+        this.subnetMaskPanel.setBounds(0, 104, 285, 41);
+        panel_4.add(this.subnetMaskPanel);
+        this.subnetMaskPanel.setBorder(createTitledBorder("Subnet Mask"));
+        this.subnetMaskPanel.setBackground(Color.WHITE);
+        this.subnetMaskPanel.setLayout(new BoxLayout(this.subnetMaskPanel, BoxLayout.X_AXIS));
 
         txtSubnetMask1 = new JFormattedTextField();
         txtSubnetMask1.setDocument(new TxtFieldFormatter());
@@ -148,10 +190,10 @@ public class SubSubNetPanel extends JPanel {
         txtSubnetMask4 = new JFormattedTextField();
         txtSubnetMask4.setDocument(new TxtFieldFormatter());
 
-        subnetPanel.add(txtSubnetMask1);
-        subnetPanel.add(txtSubnetMask2);
-        subnetPanel.add(txtSubnetMask3);
-        subnetPanel.add(txtSubnetMask4);
+        this.subnetMaskPanel.add(txtSubnetMask1);
+        this.subnetMaskPanel.add(txtSubnetMask2);
+        this.subnetMaskPanel.add(txtSubnetMask3);
+        this.subnetMaskPanel.add(txtSubnetMask4);
 
         buttonPanel = new JPanel();
         buttonPanel.setBounds(5, 345, 285, 33);
@@ -192,10 +234,11 @@ public class SubSubNetPanel extends JPanel {
         btnAddHost = new JButton("");
         btnAddHost.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                scrollPaneViewPortPane.add(new HostLabel((IPv4HostAddress) hostAddressSelector.getSelectedItem()));
+                IPv4HostAddress h =(IPv4HostAddress) hostAddressSelector.getSelectedItem();
+                scrollPaneViewPortPane.add(new HostLabel(h));
+                hostAddresses.add(h);
                 hostAddressSelector.removeItemAt(hostAddressSelector.getSelectedIndex());
                 repaintScrollPaneViewPortPane();
-                hostAddresses.add((IPv4HostAddress) hostAddressSelector.getSelectedItem());
             }
         });
         hostPanelButtonPane.add(btnAddHost, BorderLayout.EAST);
@@ -237,6 +280,18 @@ public class SubSubNetPanel extends JPanel {
             }
         });
 
+        btnCreate = new JButton("Create");
+        btnCreate.setToolTipText("Create the Subnet");
+        btnCreate.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                assembleSubnet();
+                subnetPanel.sendSubnet();
+                subnetPanel.addSubSubNets();
+                subnetFrame.closeFrame();
+                }
+        });
+
+        //buttonPanel.add(btnCreate);
         buttonPanel.add(btnClose);
 
         panel_4.add(hostPanel);

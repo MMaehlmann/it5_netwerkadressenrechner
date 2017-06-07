@@ -65,7 +65,7 @@ public class SubnetFrame extends JFrame {
 
         panel_7 = new JPanel();
         panel_7.setBackground(Color.WHITE);
-        tabbedPane.addTab("Subnet 1", null, panel_7, null);
+        tabbedPane.addTab(subnet.getShortName(), null, panel_7, null);
         panel_7.setLayout(null);
         panel_7.add(subnetPanel = new SubnetPanel(mainFrame, this, subnet));
         setVisible(true);
@@ -73,7 +73,12 @@ public class SubnetFrame extends JFrame {
 
     public void addTab(JPanel panel) {
         increment++;
-        this.tabbedPane.addTab("SubSubNet" + increment, panel);
+        this.tabbedPane.addTab("SubSubNet", panel);
+    }
+
+    public void addTab(JPanel panel, String title) {
+        increment++;
+        this.tabbedPane.addTab(title, panel);
     }
 
     /**

@@ -29,6 +29,10 @@ public class IPv4Subnet {
 
     private long remainingAmountOfHosts;
 
+    public ArrayList<IPv4Subnet> getSubSubNets() {
+        return subSubNets;
+    }
+
     private ArrayList<IPv4Subnet> subSubNets = new ArrayList<>();
 
     public IPv4Subnet() {}
@@ -245,6 +249,13 @@ public class IPv4Subnet {
 
     public long getRemainingAmountOfHosts() {
         return remainingAmountOfHosts;
+    }
+
+    public String getShortName() {
+        if(this.name.length() > 5)
+            return this.getName().substring(0,5) + "...";
+        else
+            return this.name;
     }
 
     /**

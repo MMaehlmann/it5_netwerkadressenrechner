@@ -1,11 +1,6 @@
 package gui;
 
-import org.mnm.ipv4.ipv4.IPv4HostAddress;
-import org.mnm.ipv4.ipv4.IPv4NetworkID;
 import org.mnm.ipv4.subnet.IPv4Subnet;
-import org.mnm.ipv4.subnet.IPv4SubnetMask;
-import org.mnm.ipv4.subnet.SubnetBuildingError;
-import org.mnm.ipv4.subnet.ipv4SubnetUtils;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -13,7 +8,6 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 /**
  * &lt;pre&gt;
@@ -80,7 +74,7 @@ public class MainFrame extends JFrame {
         setVisible(true);
     }
 
-    private MainFrame getFrame()  {
+    private MainFrame getThisFrame()  {
         return this;
     }
 
@@ -227,7 +221,7 @@ public class MainFrame extends JFrame {
         }
 
         private void initPopulatedSubnetFrame() {
-            SubnetFrame subnetFrame = new SubnetFrame(getFrame(), this.subnet);
+            SubnetFrame subnetFrame = new SubnetFrame(getThisFrame(), this.subnet);
         }
     }
 }

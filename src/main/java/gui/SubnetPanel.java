@@ -83,6 +83,13 @@ public class SubnetPanel extends JPanel {
         run(mainFrame, subnetFrame);
         this.subnet = subnet;
         populateFields();
+        populateSubSubNets();
+    }
+
+    private void populateSubSubNets() {
+        for(IPv4Subnet s : this.subnet.getSubSubNets()) {
+            subnetFrame.addTab(new SubSubNetPanel(mainFrame, subnetFrame, subnetPanel, this.subnet, s), s.getShortName());
+        }
     }
 
     private void populateFields() {
@@ -215,7 +222,7 @@ public class SubnetPanel extends JPanel {
         btnAddSubSubNet.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                subnetFrame.addTab(new SubSubNetPanel(mainFrame, subnetFrame, subnet));
+                subnetFrame.addTab(new SubSubNetPanel(mainFrame, subnetFrame, subnetPanel, subnet));
             }
         });
         buttonPanel.add(btnAddSubSubNet);
@@ -264,10 +271,11 @@ public class SubnetPanel extends JPanel {
         btnAddHost = new JButton("");
         btnAddHost.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                scrollPaneViewPortPane.add(new HostLabel((IPv4HostAddress) hostAddressSelector.getSelectedItem()));
+                IPv4HostAddress h =(IPv4HostAddress) hostAddressSelector.getSelectedItem();
+                scrollPaneViewPortPane.add(new HostLabel(h));
+                hostAddresses.add(h);
                 hostAddressSelector.removeItemAt(hostAddressSelector.getSelectedIndex());
                 repaintScrollPaneViewPortPane();
-                hostAddresses.add((IPv4HostAddress) hostAddressSelector.getSelectedItem());
             }
         });
         hostPanelButtonPane.add(btnAddHost, BorderLayout.EAST);
@@ -300,14 +308,14 @@ public class SubnetPanel extends JPanel {
         this.setBackground(Color.WHITE);
     }
 
-    private void addSubSubNets() {
+    public void addSubSubNets() {
         ArrayList<SubSubNetPanel> subSubNetPanels = subnetFrame.getSubSubNetPanels();
         for(SubSubNetPanel s : subSubNetPanels){
             this.subnet.addSubSubNet(s.assembleSubnet());
         }
     }
 
-    private void sendSubnet() {
+    public void sendSubnet() {
         mainFrame.addSubnet(this.subnet);
     }
 
