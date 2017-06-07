@@ -67,7 +67,7 @@ public class SubSubNetValidator {
             return false;
 
         if(subSubNetStealsHosts(
-                ipv4SubnetUtils.getAllHosts(subsubnet),
+                IPv4SubnetUtils.getAllHosts(subsubnet),
                 subnet.getAddressList()
         ))
             return false;
@@ -101,6 +101,6 @@ public class SubSubNetValidator {
     }
 
     private boolean netIDIsHost(IPv4NetworkID netID) {
-        return ipv4SubnetUtils.isHost(netID.getIpv4Address(), subnet);
+        return IPv4SubnetUtils.isHost(netID.getIpv4Address(), subnet);
     }
 }

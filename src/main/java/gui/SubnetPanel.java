@@ -3,7 +3,7 @@ package gui;
 import org.mnm.ipv4.ipv4.IPv4HostAddress;
 import org.mnm.ipv4.subnet.IPv4Subnet;
 import org.mnm.ipv4.subnet.SubnetBuildingError;
-import org.mnm.ipv4.subnet.ipv4SubnetUtils;
+import org.mnm.ipv4.subnet.IPv4SubnetUtils;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -259,8 +259,8 @@ public class SubnetPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 transferFields();
                 try {
-                    IPv4Subnet subnet = new IPv4Subnet.Builder().buildByName(netID + "/" + ipv4SubnetUtils.calcPrefixByMask(subnetMask));
-                    hostAddressSelector.setModel(new DefaultComboBoxModel(ipv4SubnetUtils.getAllHosts(subnet).toArray()));
+                    IPv4Subnet subnet = new IPv4Subnet.Builder().buildByName(netID + "/" + IPv4SubnetUtils.calcPrefixByMask(subnetMask));
+                    hostAddressSelector.setModel(new DefaultComboBoxModel(IPv4SubnetUtils.getAllHosts(subnet).toArray()));
                 } catch (SubnetBuildingError subnetBuildingError) {
                     subnetBuildingError.printStackTrace();
                 }
@@ -353,7 +353,7 @@ public class SubnetPanel extends JPanel {
             testPassed = false;
         }
 
-        if (!ipv4SubnetUtils.isValidIP(this.netID)) {
+        if (!IPv4SubnetUtils.isValidIP(this.netID)) {
             this.updateTextArea(this.txtNetworkID1);
             this.updateTextArea(this.txtNetworkID2);
             this.updateTextArea(this.txtNetworkID3);
@@ -361,7 +361,7 @@ public class SubnetPanel extends JPanel {
             testPassed = false;
         }
 
-        if (!ipv4SubnetUtils.isValidSubnetMask(this.subnetMask)) {
+        if (!IPv4SubnetUtils.isValidSubnetMask(this.subnetMask)) {
             this.updateTextArea(this.txtSubnetMask1);
             this.updateTextArea(this.txtSubnetMask2);
             this.updateTextArea(this.txtSubnetMask3);
@@ -373,7 +373,7 @@ public class SubnetPanel extends JPanel {
         if (testPassed){
             try {
                 this.subnet = new IPv4Subnet.Builder()
-                        .buildByName(this.netID + "/" + ipv4SubnetUtils.calcPrefixByMask(this.subnetMask));
+                        .buildByName(this.netID + "/" + IPv4SubnetUtils.calcPrefixByMask(this.subnetMask));
                 this.subnet.setName(this.name);
                 this.subnet.setHostAddresses(this.hostAddresses);
             } catch (SubnetBuildingError subnetBuildingError) {

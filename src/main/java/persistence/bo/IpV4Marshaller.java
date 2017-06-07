@@ -10,14 +10,7 @@ import java.util.List;
 
 public class IpV4Marshaller {
 
-    public String marshall(String ip, String name, String netId, String broadcast, String subnetmask, ArrayList<String> hosts) {
-        IpV4 ipV4 = new IpV4();
-        ipV4.setIp(ip);
-        ipV4.setName(name);
-        ipV4.setNetId(netId);
-        ipV4.setBroadcast(broadcast);
-        ipV4.setSubnetmask(subnetmask);
-        ipV4.setHosts(hosts);
+    public String marshall(IpV4 ipV4) {
 
         // TODO Change file path
         String fullFilePath = String.format(

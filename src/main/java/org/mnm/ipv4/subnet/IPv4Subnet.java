@@ -6,7 +6,6 @@ import org.mnm.ipv4.ipv4.IPv4HostAddress;
 import org.mnm.ipv4.ipv4.IPv4NetworkID;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Stream;
 
 /**
@@ -62,7 +61,7 @@ public class IPv4Subnet {
      * </pre>
      */
     public IPv4Subnet addHost(IPv4HostAddress address) throws SubnetBuildingError {
-        if(ipv4SubnetUtils.isHost(address.getIpv4Address(), this)) {
+        if(IPv4SubnetUtils.isHost(address.getIpv4Address(), this)) {
             this.addressList.add(address);
             this.hostAddresses.add(address);
         }else
@@ -319,10 +318,10 @@ public class IPv4Subnet {
                 falsePrefixExeption.printStackTrace();
             }
 
-            if (!ipv4SubnetUtils.isValidNetID(id, subnetMask))
+            if (!IPv4SubnetUtils.isValidNetID(id, subnetMask))
                 throw new SubnetBuildingError("An invalid netID was detected: " + this.networkID);
 
-            this.broadcastAddress = ipv4SubnetUtils.calcBroadcast(subnetMask, networkID);
+            this.broadcastAddress = IPv4SubnetUtils.calcBroadcast(subnetMask, networkID);
 
             return build();
         }
@@ -343,15 +342,15 @@ public class IPv4Subnet {
 
             try {
                 this.subnetMask = new IPv4SubnetMask.Builder()
-                        .buildByPrefix(ipv4SubnetUtils.calcPrefixByHosts(hosts));
+                        .buildByPrefix(IPv4SubnetUtils.calcPrefixByHosts(hosts));
             } catch (FalsePrefixExeption falsePrefixExeption) {
                 falsePrefixExeption.printStackTrace();
             }
-            if(ipv4SubnetUtils.isNetID(netID, subnetMask))
+            if(IPv4SubnetUtils.isNetID(netID, subnetMask))
                 this.networkID = new IPv4NetworkID(netID);
 
-            this.broadcastAddress = ipv4SubnetUtils.calcBroadcast(subnetMask, networkID);
-            if(!ipv4SubnetUtils.isBroadcast(broadcastAddress.getIpv4Address(), subnetMask))
+            this.broadcastAddress = IPv4SubnetUtils.calcBroadcast(subnetMask, networkID);
+            if(!IPv4SubnetUtils.isBroadcast(broadcastAddress.getIpv4Address(), subnetMask))
                 throw new SubnetBuildingError("A false broadcastAddress was detected: " + broadcastAddress);
 
             return build();

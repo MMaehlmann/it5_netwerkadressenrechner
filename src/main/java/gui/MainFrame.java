@@ -1,6 +1,15 @@
 package gui;
 
+import org.mnm.ipv4.ipv4.IPv4BroadcastAddress;
+import org.mnm.ipv4.ipv4.IPv4HostAddress;
+import org.mnm.ipv4.ipv4.IPv4NetworkID;
+import org.mnm.ipv4.subnet.FalsePrefixExeption;
 import org.mnm.ipv4.subnet.IPv4Subnet;
+import org.mnm.ipv4.subnet.IPv4SubnetMask;
+import org.mnm.ipv4.subnet.SubnetBuildingError;
+import persistence.bo.IpV4;
+import persistence.bo.IpV4Marshaller;
+import persistence.bo.IpV4Unmarshaller;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -8,6 +17,9 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  * &lt;pre&gt;
@@ -63,7 +75,14 @@ public class MainFrame extends JFrame {
         btnLoad.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO implement
+                final JFileChooser fc = new JFileChooser();
+                fc.setCurrentDirectory(new File(System.getProperty("user.dir")+ "/resources/out/"));
+                fc.showOpenDialog(getThisFrame());
+                File file = fc.getSelectedFile();
+                System.out.println(file.getAbsolutePath());
+                IpV4Unmarshaller unmarshaller = new IpV4Unmarshaller();
+                Optional<IpV4> ipV4 = unmarshaller.unmarshal(file.getAbsolutePath());
+                addSubnet(createSubnet(ipV4));
             }
         });
 
@@ -86,6 +105,57 @@ public class MainFrame extends JFrame {
         setForeground(Color.WHITE);
         setBackground(Color.WHITE);
         setVisible(true);
+    }
+
+    private IPv4Subnet createSubnet(Optional<IpV4> ipV4) {
+
+        IPv4Subnet subnet = createIPv4Subnet(ipV4);
+        for(IpV4 i : ipV4.get().getSubSubNet())
+            subnet.addSubSubNet(createIPv4Subnet(i));
+
+        return subnet;
+    }
+
+    private IPv4Subnet createIPv4Subnet(Optional<IpV4> ipV4) {
+        IPv4Subnet subnet = new IPv4Subnet();
+        try {
+            subnet
+                    .setName(ipV4.get().getName())
+                    .setSubnetMask(new IPv4SubnetMask.Builder().buildByString(ipV4.get().getSubnetmask()))
+                    .setNetworkID(new IPv4NetworkID(ipV4.get().getNetId()))
+                    .setBroadcastAddress(new IPv4BroadcastAddress(ipV4.get().getBroadcast()));
+            ArrayList<IPv4HostAddress> hostAddresses = new ArrayList<>();
+            for(String s : ipV4.get().getHosts())
+                hostAddresses.add(new IPv4HostAddress(s));
+            subnet.setHostAddresses(hostAddresses);
+        } catch (SubnetBuildingError subnetBuildingError) {
+            subnetBuildingError.printStackTrace();
+        } catch (FalsePrefixExeption falsePrefixExeption) {
+            falsePrefixExeption.printStackTrace();
+        }
+        return subnet;
+    }
+
+    private IPv4Subnet createIPv4Subnet(IpV4 ipV4) {
+        IPv4Subnet subnet = new IPv4Subnet();
+        try {
+            subnet
+                    .setName(ipV4.getName())
+                    .setSubnetMask(new IPv4SubnetMask.Builder().buildByString(ipV4.getSubnetmask()))
+                    .setNetworkID(new IPv4NetworkID(ipV4.getNetId()))
+                    .setBroadcastAddress(new IPv4BroadcastAddress(ipV4.getBroadcast()));
+            ArrayList<IPv4HostAddress> hostAddresses = new ArrayList<>();
+            for(String s : ipV4.getHosts())
+                hostAddresses.add(new IPv4HostAddress(s));
+            subnet.setHostAddresses(hostAddresses);
+
+
+        } catch (SubnetBuildingError subnetBuildingError) {
+            subnetBuildingError.printStackTrace();
+        } catch (FalsePrefixExeption falsePrefixExeption) {
+            falsePrefixExeption.printStackTrace();
+        }
+        return subnet;
     }
 
     private MainFrame getThisFrame()  {
@@ -192,7 +262,14 @@ public class MainFrame extends JFrame {
             btnSave.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    //TODO implement save operation
+                    IpV4Marshaller ipV4Unmarshaller = new IpV4Marshaller();
+                    ArrayList<IpV4> subSubNets = new ArrayList<>();
+                    IpV4 ipv4 = createIPv4Object(subnet);
+                    for(IPv4Subnet s : subnet.getSubSubNets())
+                        subSubNets.add(createIPv4Object(s));
+                    ipv4.setSubSubNet(subSubNets);
+
+                    ipV4Unmarshaller.marshall(ipv4);
                 }
             });
 
@@ -221,6 +298,20 @@ public class MainFrame extends JFrame {
             this.add(Box.createRigidArea(new Dimension(10, 0)));
             this.add(btnDelete);
             subnet.print();
+        }
+
+        private IpV4 createIPv4Object(IPv4Subnet subnet) {
+            ArrayList<String> hosts = new ArrayList<>();
+            IpV4 ipV4 = new IpV4();
+            ipV4.setName(subnet.getName());
+            ipV4.setBroadcast(subnet.getBroadcast().toString());
+            ipV4.setNetId(subnet.getNetID().toString());
+            ipV4.setSubnetmask(subnet.getSubnetMask().toString());
+            for(IPv4HostAddress h: subnet.getHostAddressList())
+                hosts.add(h.toString());
+            ipV4.setHosts(hosts);
+
+            return ipV4;
         }
 
         /**

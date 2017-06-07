@@ -1,7 +1,5 @@
 package org.mnm.ipv6.ipv6;
 
-import it5.p04.fileadapter.Type;
-
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -12,18 +10,12 @@ public abstract class IPv6Address {
 
     private int[] ipv6Address;
 
-    private Type type;
-
     public int[] getIpv6Address() {
         return ipv6Address;
     }
 
     public void setIpv6Address(int[] ipv6Address) {
         this.ipv6Address = ipv6Address;
-    }
-
-    public Type getType() {
-        return type;
     }
 
     @Override

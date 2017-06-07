@@ -18,6 +18,7 @@ public class IpV4 {
     private String netId;
     private String subnetmask;
     private String broadcast;
+    private ArrayList<IpV4> subSubNet;
 
     public String getName() {
         return name;
@@ -71,5 +72,14 @@ public class IpV4 {
 
     public String getBroadcast() {
         return broadcast;
+    }
+
+    public ArrayList<IpV4> getSubSubNet() {
+        return subSubNet;
+    }
+
+    @XmlElement
+    public void setSubSubNet(ArrayList<IpV4> subSubNet) {
+        this.subSubNet = subSubNet;
     }
 }

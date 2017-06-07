@@ -1,9 +1,7 @@
 package org.mnm.ipv4.ipv4;
 
-import it5.p04.fileadapter.Type;
-import org.mnm.ipv4.subnet.ipv4SubnetUtils;
+import org.mnm.ipv4.subnet.IPv4SubnetUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -18,14 +16,12 @@ public abstract class IPv4Address{
 
     private int[] ipv4Address;
 
-    private Type type;
-
     public int[] getIpv4Address() {
         return ipv4Address;
     }
 
     public void setIpv4Address(int[] ipv4Address) {
-        if (ipv4SubnetUtils.isValidIP(ipv4Address)) {
+        if (IPv4SubnetUtils.isValidIP(ipv4Address)) {
             this.ipv4Address = ipv4Address;
         }
     }
@@ -75,14 +71,5 @@ public abstract class IPv4Address{
         return Arrays.stream(ipv4Address)
                 .mapToObj(i -> ((Integer) i).toBinaryString(i))
                 .collect(Collectors.joining("."));
-    }
-
-    public Type setType(Type type){
-        this.type = type;
-        return type;
-    }
-
-    public Type getType(){
-        return this.type;
     }
 }

@@ -14,7 +14,8 @@ public class IpV4Unmarshaller {
 
     public Optional<IpV4> unmarshal(String fileName) {
         try {
-            String fullFilePath = String.format("it5_netwerkadressenrechner/resources/out/%s", fileName);
+            String fullFilePath = fileName;
+            //String fullFilePath = String.format("it5_netwerkadressenrechner/resources/out/%s", fileName);
             File file = new File(fullFilePath);
             JAXBContext jaxbContext = JAXBContext.newInstance(IpV4.class);
 
