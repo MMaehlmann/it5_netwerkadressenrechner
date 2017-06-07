@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>gui.JEditPane</OriginalElement>
+  <nodes>
+    <node x="2133.459311615002" y="2782.0">gui.SubnetPanel</node>
+    <node x="2823.460366437045" y="267.5">org.mnm.ipv4.ipv4.IPv4HostAddress</node>
+    <node x="1769.0" y="3643.0">org.mnm.ipv6.ipv6.IPv6HostAddressTest</node>
+    <node x="932.0" y="3811.0">org.mnm.ipv6.ipv6.IPv6HostAddress</node>
+    <node x="3469.6685562571756" y="3391.0">gui.JEditPane</node>
+    <node x="1226.1414418293148" y="689.0">org.mnm.ipv4.subnet.IPv4Subnet</node>
+    <node x="2887.960366437045" y="33.0">org.mnm.ipv4.ipv4.FalseIPExeption</node>
+    <node x="1372.4468116150024" y="1642.0">org.mnm.ipv4.subnet.SubnetBuilderTest</node>
+    <node x="644.8352731534637" y="267.5">org.mnm.ipv4.ipv4.IPv4BroadcastAddress</node>
+    <node x="2404.209311615002" y="2231.0">gui.SubSubNetPanel</node>
+    <node x="107.5" y="3643.0">org.mnm.ipv6.subnet.IllegalIPv6Exeption</node>
+    <node x="3474.560366437045" y="2052.5">gui.TxtFieldFormatter</node>
+    <node x="0.0" y="3767.0">org.mnm.ipv6.subnet.ipv6SubnetUtils</node>
+    <node x="1945.1414418293148" y="744.5">org.mnm.ipv4.subnet.IPv4SubnetUtils</node>
+    <node x="1603.4468116150024" y="1575.5">gui.MainFrame</node>
+    <node x="2968.1414418293148" y="997.5">org.mnm.ipv4.subnet.SubSubNetValidatorTest</node>
+    <node x="454.0" y="3643.0">persistence.bo.IpV4</node>
+    <node x="1927.154116437045" y="267.5">org.mnm.ipv4.subnet.FalsePrefixExeption</node>
+    <node x="1199.0" y="3643.0">org.mnm.ipv6.subnet.ipv6SubnetUtilsTest</node>
+    <node x="916.0" y="3643.0">org.mnm.ipv6.ipv6.IPv6Address</node>
+    <node x="896.8352731534637" y="267.5">org.mnm.ipv4.subnet.SubnetBuildingError</node>
+    <node x="549.3414418293146" y="1488.0">org.mnm.ipv4.subnet.IPv4SubnetUtilsTest</node>
+    <node x="0.0" y="953.5">org.mnm.ipv4.subnet.SubnetMaskBuilderTest</node>
+    <node x="2708.1414418293148" y="997.5">persistence.bo.IpV4Unmarshaller</node>
+    <node x="421.5" y="267.5">org.mnm.ipv4.ipv4.IPv4NetworkID</node>
+    <node x="1995.0" y="3643.0">persistence.bo.IpV4Marshaller</node>
+    <node x="1609.9468116150024" y="1986.0">gui.SubnetFrame</node>
+    <node x="44.5" y="190.0">org.mnm.ipv4.subnet.IPv4SubnetMask</node>
+    <node x="1296.1104166666669" y="223.0">org.mnm.ipv4.subnet.SubSubNetValidator</node>
+    <node x="949.3207831037116" y="0.0">org.mnm.ipv4.ipv4.IPv4Address</node>
+    <node x="1507.0" y="3643.0">org.mnm.ipv4.subnet.TooManyHostsExeption</node>
+    <node x="3290.560366437045" y="997.5">org.mnm.ipv4.ipv4.IPv4AddressTest</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.mnm.ipv6.ipv6.IPv6HostAddress" target="org.mnm.ipv6.ipv6.IPv6Address">
+      <point x="0.0" y="-37.0" />
+      <point x="0.0" y="59.0" />
+    </edge>
+    <edge source="org.mnm.ipv4.ipv4.IPv4BroadcastAddress" target="org.mnm.ipv4.ipv4.IPv4Address">
+      <point x="0.0" y="-37.0" />
+      <point x="760.8352731534637" y="170.0" />
+      <point x="1046.0707831037116" y="170.0" />
+      <point x="-32.25" y="70.0" />
+    </edge>
+    <edge source="org.mnm.ipv4.ipv4.IPv4HostAddress" target="org.mnm.ipv4.ipv4.IPv4Address">
+      <point x="-51.5" y="-37.0" />
+      <point x="2874.960366437045" y="170.0" />
+      <point x="1175.0707831037116" y="170.0" />
+      <point x="96.75" y="70.0" />
+    </edge>
+    <edge source="org.mnm.ipv4.ipv4.IPv4NetworkID" target="org.mnm.ipv4.ipv4.IPv4Address">
+      <point x="0.0" y="-37.0" />
+      <point x="519.5" y="160.0" />
+      <point x="981.5707831037116" y="160.0" />
+      <point x="-96.75" y="70.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="1232.0" y="1414.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

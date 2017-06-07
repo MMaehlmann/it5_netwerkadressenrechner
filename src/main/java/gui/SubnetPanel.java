@@ -210,6 +210,8 @@ public class SubnetPanel extends JPanel {
                     sendSubnet();
                     addSubSubNets();
                     subnetFrame.closeFrame();
+                }else{
+                    JOptionPane.showConfirmDialog(subnetPanel, "One invalid subnet was detected. Please confirm the validity.");
                 }
 
             }
@@ -263,6 +265,7 @@ public class SubnetPanel extends JPanel {
                     hostAddressSelector.setModel(new DefaultComboBoxModel(IPv4SubnetUtils.getAllHosts(subnet).toArray()));
                 } catch (SubnetBuildingError subnetBuildingError) {
                     subnetBuildingError.printStackTrace();
+                    JOptionPane.showConfirmDialog(buttonPanel, "The subnet is not valid, thus no hosts can be generated.");
                 }
             }
         });
