@@ -338,6 +338,8 @@ public class IPv4Subnet {
 
             this.broadcastAddress = IPv4SubnetUtils.calcBroadcast(subnetMask, networkID);
 
+            this.remainingAmountOfHosts = this.subnetMask.getMaxHosts();
+
             return build();
         }
 
