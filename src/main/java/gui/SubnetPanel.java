@@ -211,7 +211,10 @@ public class SubnetPanel extends JPanel {
                     addSubSubNets();
                     subnetFrame.closeFrame();
                 }else{
-                    JOptionPane.showConfirmDialog(subnetPanel, "One invalid subnet was detected. Please confirm the validity.");
+                    JOptionPane.showMessageDialog(buttonPanel,
+                            "One invalid subnet was detected. Please confirm the validity.",
+                            "Invalid Subnet",
+                            JOptionPane.ERROR_MESSAGE);
                 }
 
             }
@@ -265,7 +268,10 @@ public class SubnetPanel extends JPanel {
                     hostAddressSelector.setModel(new DefaultComboBoxModel(IPv4SubnetUtils.getAllHosts(subnet).toArray()));
                 } catch (SubnetBuildingError subnetBuildingError) {
                     subnetBuildingError.printStackTrace();
-                    JOptionPane.showConfirmDialog(buttonPanel, "The subnet is not valid, thus no hosts can be generated.");
+                    JOptionPane.showMessageDialog(buttonPanel,
+                            "The subnet is not valid, thus no hosts can be generated.",
+                            "Invalid Subnet",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -381,13 +387,9 @@ public class SubnetPanel extends JPanel {
                 this.subnet.setHostAddresses(this.hostAddresses);
             } catch (SubnetBuildingError subnetBuildingError) {
                 subnetBuildingError.printStackTrace();
+                return false;
             }
         }
-        else
-            JOptionPane.showMessageDialog(buttonPanel,
-                    "This is not valid MOFO.",
-                    "Inane error",
-                    JOptionPane.ERROR_MESSAGE);
 
         return testPassed;
     }
@@ -405,7 +407,7 @@ public class SubnetPanel extends JPanel {
      */
     private void updateTextArea(JTextField jTextField) {
         jTextField.setForeground(Color.RED);
-        jTextField.setBorder(new LineBorder(Color.RED));
+        //jTextField.setBorder(new LineBorder(Color.RED));
         jTextField.revalidate();
         jTextField.repaint();
     }
@@ -539,6 +541,7 @@ public class SubnetPanel extends JPanel {
             this.add(btnEdit);
             this.add(Box.createRigidArea(new Dimension(25, 0)));
             this.add(btnDelete);
+            this.setMaximumSize(this.getPreferredSize());
         }
 
         public String getName() {

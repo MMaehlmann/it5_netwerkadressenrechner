@@ -357,7 +357,7 @@ public class SubSubNetPanel extends JPanel {
         }
         else
             JOptionPane.showMessageDialog(buttonPanel,
-                    "This is not a valid subsubnet.",
+                    "\"" + this.getName() + "\" is not a valid SubSubNet.",
                     "SubSubNetBuilding error",
                     JOptionPane.ERROR_MESSAGE);
 
@@ -372,7 +372,7 @@ public class SubSubNetPanel extends JPanel {
      */
     private void updateTextArea(JTextField jTextField) {
         jTextField.setForeground(Color.RED);
-        jTextField.setBorder(new LineBorder(Color.RED));
+        //jTextField.setBorder(new LineBorder(Color.RED));
         jTextField.revalidate();
         jTextField.repaint();
     }
