@@ -8,10 +8,12 @@ import org.mnm.ipv4.subnet.SubnetBuildingError;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.TableStringConverter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * &lt;pre&gt;
@@ -68,6 +70,7 @@ public class SubSubNetPanel extends JPanel {
     private IPv4Subnet subnet;
     private SubnetPanel subnetPanel;
     private IPv4Subnet subSubNet;
+    private SubSubNetPanel subSubNetPanel = this;
 
     /**
      * &lt;pre&gt;
@@ -456,17 +459,45 @@ public class SubSubNetPanel extends JPanel {
         return subnet;
     }
 
+    public boolean subnetPanelContainsHosts(String textFields) {
+        Component[] components = scrollPaneViewPortPane.getComponents();
+        for(Component c : components){
+            if(c.getClass() == SubSubNetPanel.HostLabel.class){
+                SubSubNetPanel.HostLabel l = (SubSubNetPanel.HostLabel) c;
+                if(l.getHostAddress().toString().equals(textFields))
+                    return true;
+            }
+
+        }
+        return false;
+    }
+
+    public void addHostLabel(IPv4HostAddress address) {
+        this.scrollPaneViewPortPane.add(new SubSubNetPanel.HostLabel(address));
+        try {
+            this.subSubNet.addHost(address);
+        } catch (SubnetBuildingError subnetBuildingError) {
+            subnetBuildingError.printStackTrace();
+        }
+        this.repaintScrollPaneViewPortPane();
+    }
+
+    public IPv4Subnet getSubSubnet() {
+        return this.subSubNet;
+    }
+
     /**
      * &lt;pre&gt;
      * private class describing an ipv4 host address
      * &lt;/pre&gt;
      */
-    private class HostLabel extends JPanel {
+    public class HostLabel extends JPanel {
         private IPv4HostAddress address;
         private String name;
         private JLabel nameLabel;
         private JButton btnEdit;
         private JButton btnDelete;
+        private SubSubNetPanel.HostLabel hostLabel = this;
 
         public HostLabel(IPv4HostAddress address) {
             this.address = address;
@@ -483,6 +514,7 @@ public class SubSubNetPanel extends JPanel {
             btnDelete.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    removeHost(address);
                     destroy();
                 }
             });
@@ -493,6 +525,14 @@ public class SubSubNetPanel extends JPanel {
             btnEdit.setBorderPainted(false);
             btnEdit.setMargin(new Insets(0, 0, 0, 0));
             btnEdit.setContentAreaFilled(false);
+            btnEdit.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    JEditPane edit = new JEditPane(hostLabel, subSubNetPanel, hostAddresses, JEditPane.SUB_HOST_EDIT_OPERATION);
+                    destroy();
+                }
+            });
+
 
             nameLabel = new JLabel(name);
             nameLabel.setBackground(Color.WHITE);
@@ -517,5 +557,16 @@ public class SubSubNetPanel extends JPanel {
             repaintScrollPaneViewPortPane();
         }
 
+        public IPv4HostAddress getHostAddress() {
+            return address;
+        }
+    }
+
+    public void removeHost(IPv4HostAddress address) {
+        for (Iterator<IPv4HostAddress> it = this.hostAddresses.iterator(); it.hasNext(); ) {
+            IPv4HostAddress h = it.next();
+            if(h.equals(address))
+                it.remove();
+        }
     }
 }

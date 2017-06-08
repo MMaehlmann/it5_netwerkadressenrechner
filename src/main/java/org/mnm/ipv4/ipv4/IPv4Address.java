@@ -72,4 +72,19 @@ public abstract class IPv4Address{
                 .mapToObj(i -> ((Integer) i).toBinaryString(i))
                 .collect(Collectors.joining("."));
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        IPv4Address that = (IPv4Address) o;
+
+        return Arrays.equals(ipv4Address, that.ipv4Address);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(ipv4Address);
+    }
 }

@@ -12,6 +12,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * &lt;pre&gt;
@@ -281,9 +282,16 @@ public class SubnetPanel extends JPanel {
         btnAddHost.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 IPv4HostAddress h =(IPv4HostAddress) hostAddressSelector.getSelectedItem();
-                scrollPaneViewPortPane.add(new HostLabel(h));
-                hostAddresses.add(h);
-                hostAddressSelector.removeItemAt(hostAddressSelector.getSelectedIndex());
+                if(!subnetPanelContainsHosts(hostAddressSelector.getSelectedItem().toString())) {
+                    scrollPaneViewPortPane.add(new HostLabel(h));
+                    hostAddresses.add(h);
+                    hostAddressSelector.removeItemAt(hostAddressSelector.getSelectedIndex());
+                }else
+                    JOptionPane.showMessageDialog(buttonPanel,
+                            "This Host already exists.",
+                            "Duplicate Host",
+                            JOptionPane.ERROR_MESSAGE);
+
                 repaintScrollPaneViewPortPane();
             }
         });
@@ -394,8 +402,26 @@ public class SubnetPanel extends JPanel {
         return testPassed;
     }
 
+    public boolean subnetPanelContainsHosts(String textFields) {
+        Component[] components = scrollPaneViewPortPane.getComponents();
+        for(Component c : components){
+            if(c.getClass() == HostLabel.class){
+                SubnetPanel.HostLabel l = (SubnetPanel.HostLabel) c;
+                if(l.getHostAddress().toString().equals(textFields))
+                    return true;
+            }
+
+        }
+        return false;
+    }
+
     public void addHostLabel(IPv4HostAddress address) {
         this.scrollPaneViewPortPane.add(new HostLabel(address));
+        try {
+            this.subnet.addHost(address);
+        } catch (SubnetBuildingError subnetBuildingError) {
+            subnetBuildingError.printStackTrace();
+        }
         this.repaintScrollPaneViewPortPane();
     }
 
@@ -515,6 +541,7 @@ public class SubnetPanel extends JPanel {
             btnDelete.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    removeHost(address);
                     destroy();
                 }
             });
@@ -528,7 +555,7 @@ public class SubnetPanel extends JPanel {
             btnEdit.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    JEditPane edit = new JEditPane(hostLabel, subnetPanel, JEditPane.HOST_EDIT_OPERATION);
+                    JEditPane edit = new JEditPane(hostLabel, subnetPanel, hostAddresses, JEditPane.HOST_EDIT_OPERATION);
                     destroy();
                 }
             });
@@ -564,6 +591,14 @@ public class SubnetPanel extends JPanel {
         public void setHostAddress(IPv4HostAddress address) {
             this.address = address;
             this.name = address.toString();
+        }
+    }
+
+    public void removeHost(IPv4HostAddress address) {
+        for (Iterator<IPv4HostAddress> it = this.hostAddresses.iterator(); it.hasNext(); ) {
+            IPv4HostAddress h = it.next();
+            if(h.equals(address))
+                it.remove();
         }
     }
 }
