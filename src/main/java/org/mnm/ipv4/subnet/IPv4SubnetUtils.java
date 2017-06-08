@@ -30,6 +30,7 @@ public class IPv4SubnetUtils {
     private static final IntBinaryOperator AND = (i, j) -> (i & j) & MOD;
 
     private static final IntPredicate validIP = (i) -> (i < 256) && (i > -1);
+    private static final int MAX_ARRAY_LENGTH = 1000000;
 
 
     /**
@@ -445,6 +446,8 @@ public class IPv4SubnetUtils {
                 for(int i = grupenwechsel; i < 4; i++)
                     first[i] = 0;
             }
+            if (hostAddressList.size() == MAX_ARRAY_LENGTH)
+                return hostAddressList;
         }
         return hostAddressList;
     }
