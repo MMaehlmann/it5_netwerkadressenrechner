@@ -210,6 +210,13 @@ public class IPv4SubnetUtils {
         return Arrays.equals(idANDmask, ipANDmask);
     }
 
+    public static boolean isHost(String ip, IPv4Subnet subnet) {
+        int[] ipArray = Arrays.stream(ip.split("\\."))
+                .mapToInt(Integer::parseInt)
+                .toArray();
+        return isHost(ipArray, subnet);
+    }
+
     /**
      * &lt;pre&gt;
      * checks if an ip is a valid one

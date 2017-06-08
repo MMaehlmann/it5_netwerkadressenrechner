@@ -1,6 +1,7 @@
 package gui;
 
 import org.mnm.ipv4.ipv4.IPv4HostAddress;
+import org.mnm.ipv4.subnet.IPv4SubnetUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -60,8 +61,16 @@ public class JEditPane extends JFrame{
         this.btnUpdate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                subnetPanel.addHostLabel(new IPv4HostAddress(getTextFields()));
-                dispose();
+                if(IPv4SubnetUtils.isHost(getTextFields(), subnetPanel.getSubnet())){
+                    subnetPanel.addHostLabel(new IPv4HostAddress(getTextFields()));
+                    dispose();
+                }else{
+                    JOptionPane.showMessageDialog(getContentPane(),
+                            "This Host is not part of the subnet, or invalid.",
+                            "Invalid Host",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+
             }
         });
 
