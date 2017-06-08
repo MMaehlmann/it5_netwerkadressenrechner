@@ -80,12 +80,13 @@ public class IPv4Subnet {
      * &#64;param subsubnet the subsubnet to add
      * &#64;return this
      */
-    public IPv4Subnet addSubSubNet(IPv4Subnet subsubnet) {
+    public boolean addSubSubNet(IPv4Subnet subsubnet) {
         SubSubNetValidator validator = new SubSubNetValidator(this, subsubnet);
         if(validator.isValid())
             this.subSubNets.add(subsubnet);
-
-        return this;
+        else
+            return false;
+        return true;
     }
 
     /**

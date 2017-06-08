@@ -103,7 +103,7 @@ public class JEditPane extends JFrame{
     private void subHostEditOperation() {
         if(IPv4SubnetUtils.isHost(getTextFields(), subSubNetPanel.getSubSubnet())
            &&
-           !subSubNetPanel.subnetPanelContainsHosts(getTextFields())){
+           !subSubNetPanel.subnetSubNetPanelContainsHosts(getTextFields())){
             IPv4HostAddress h = new IPv4HostAddress(getTextFields());
             subSubNetPanel.removeHost(subHostLabel.getAddress());
             subSubNetPanel.addHostLabel(h);

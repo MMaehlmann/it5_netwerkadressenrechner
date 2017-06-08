@@ -238,9 +238,15 @@ public class SubSubNetPanel extends JPanel {
         btnAddHost.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 IPv4HostAddress h =(IPv4HostAddress) hostAddressSelector.getSelectedItem();
-                scrollPaneViewPortPane.add(new HostLabel(h));
-                hostAddresses.add(h);
-                hostAddressSelector.removeItemAt(hostAddressSelector.getSelectedIndex());
+                if(!subnetSubNetPanelContainsHosts(hostAddressSelector.getSelectedItem().toString())){
+                    scrollPaneViewPortPane.add(new HostLabel(h));
+                    hostAddresses.add(h);
+                    hostAddressSelector.removeItemAt(hostAddressSelector.getSelectedIndex());
+                }else
+                    JOptionPane.showMessageDialog(buttonPanel,
+                            "This Host already exists.",
+                            "Duplicate Host",
+                            JOptionPane.ERROR_MESSAGE);
                 repaintScrollPaneViewPortPane();
             }
         });
@@ -287,7 +293,11 @@ public class SubSubNetPanel extends JPanel {
         btnCreate.setToolTipText("Create the Subnet");
         btnCreate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                assembleSubnet();
+                try {
+                    assembleSubnet();
+                } catch (SubnetBuildingError subnetBuildingError) {
+                    subnetBuildingError.printStackTrace();
+                }
                 subnetPanel.sendSubnet();
                 subnetPanel.addSubSubNets();
                 subnetFrame.closeFrame();
@@ -323,7 +333,7 @@ public class SubSubNetPanel extends JPanel {
      * &#64;return boolean
      * &lt;/pre&gt;
      */
-    public IPv4Subnet assembleSubnet() {
+    public IPv4Subnet assembleSubnet() throws SubnetBuildingError {
         this.transferFields();
         boolean testPassed = true;
         if (this.name.isEmpty()) {
@@ -349,14 +359,10 @@ public class SubSubNetPanel extends JPanel {
         }
 
         if (testPassed) {
-            try {
                 this.subnet = new IPv4Subnet.Builder()
                         .buildByName(this.netID + "/" + IPv4SubnetUtils.calcPrefixByMask(this.subnetMask));
                 this.subnet.setName(this.name);
                 this.subnet.setHostAddresses(this.hostAddresses);
-            } catch (SubnetBuildingError subnetBuildingError) {
-                subnetBuildingError.printStackTrace();
-            }
         }
         else
             JOptionPane.showMessageDialog(buttonPanel,
@@ -459,7 +465,7 @@ public class SubSubNetPanel extends JPanel {
         return subnet;
     }
 
-    public boolean subnetPanelContainsHosts(String textFields) {
+    public boolean subnetSubNetPanelContainsHosts(String textFields) {
         Component[] components = scrollPaneViewPortPane.getComponents();
         for(Component c : components){
             if(c.getClass() == SubSubNetPanel.HostLabel.class){
@@ -538,7 +544,7 @@ public class SubSubNetPanel extends JPanel {
             nameLabel.setBackground(Color.WHITE);
             nameLabel.setOpaque(true);
             this.add(nameLabel);
-            this.add(Box.createRigidArea(new Dimension(100, 0)));
+            this.add(Box.createRigidArea(new Dimension(75, 0)));
             this.add(btnEdit);
             this.add(Box.createRigidArea(new Dimension(25, 0)));
             this.add(btnDelete);

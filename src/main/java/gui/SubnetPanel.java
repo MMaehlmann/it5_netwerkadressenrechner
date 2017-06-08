@@ -208,9 +208,10 @@ public class SubnetPanel extends JPanel {
         btnCreate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 if(assembleSubnet()){
-                    sendSubnet();
-                    addSubSubNets();
-                    subnetFrame.closeFrame();
+                    if(addSubSubNets()) {
+                        sendSubnet();
+                        subnetFrame.closeFrame();
+                    }
                 }else{
                     JOptionPane.showMessageDialog(buttonPanel,
                             "One invalid subnet was detected. Please confirm the validity.",
@@ -325,11 +326,22 @@ public class SubnetPanel extends JPanel {
         this.setBackground(Color.WHITE);
     }
 
-    public void addSubSubNets() {
+    public boolean addSubSubNets() {
         ArrayList<SubSubNetPanel> subSubNetPanels = subnetFrame.getSubSubNetPanels();
         for(SubSubNetPanel s : subSubNetPanels){
-            this.subnet.addSubSubNet(s.assembleSubnet());
+            try {
+                if(!this.subnet.addSubSubNet(s.assembleSubnet())) {
+                    JOptionPane.showMessageDialog(buttonPanel,
+                            "One invalid subsubnet (\"" + s.getName() + "\") was detected. Please confirm the validity.",
+                            "Invalid Subnet",
+                            JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+            } catch (SubnetBuildingError subnetBuildingError) {
+                subnetBuildingError.printStackTrace();
+            }
         }
+        return true;
     }
 
     public void sendSubnet() {
