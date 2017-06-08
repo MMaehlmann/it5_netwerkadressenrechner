@@ -15,11 +15,11 @@ public class IpV4 {
 
     private String name;
     private String ip;
-    private ArrayList<String> hosts;
+    private ArrayList<String> hosts = new ArrayList<>();
     private String netId;
     private String subnetmask;
     private String broadcast;
-    private ArrayList<IpV4> subSubNet;
+    private ArrayList<IpV4> subSubNet = new ArrayList<>();
 
     public String getName() {
         return name;
