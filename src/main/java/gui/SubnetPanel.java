@@ -244,7 +244,7 @@ public class SubnetPanel extends JPanel {
                 }
             }
         });
-        buttonPanel.add(btnNext);
+        //buttonPanel.add(btnNext);
 
         hostPanel = new JPanel();
         hostPanel.setBounds(0, 156, 285, 174);
