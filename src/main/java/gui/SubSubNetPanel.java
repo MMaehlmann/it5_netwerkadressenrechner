@@ -229,6 +229,10 @@ public class SubSubNetPanel extends JPanel {
                     hostAddressSelector.setModel(new DefaultComboBoxModel(IPv4SubnetUtils.getAllHosts(subnet).toArray()));
                 } catch (SubnetBuildingError subnetBuildingError) {
                     subnetBuildingError.printStackTrace();
+                    JOptionPane.showMessageDialog(buttonPanel,
+                            "Invalid Subnet, no Host could be generated",
+                            "Invalid Subnet",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
